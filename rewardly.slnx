@@ -7,6 +7,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Rewardly.IntegrationTests/Rewardly.IntegrationTests.csproj" Id="35b78fb9-4b02-4ab4-a6f4-a52bf4b540b0" />
-    <Project Path="tests/Rewardly.Tests/Rewardly.UnitTests.csproj" Id="806d2977-5078-4d88-824e-cb9a43fe4350" />
+    <Project Path="tests/Rewardly.UnitTests/Rewardly.UnitTests.csproj" Id="806d2977-5078-4d88-824e-cb9a43fe4350" />
   </Folder>
 </Solution>
