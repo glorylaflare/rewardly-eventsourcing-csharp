@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: 8.0.x
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  restore:
+    name: Restore
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore all projects
+        run: |
+          dotnet restore src/Rewardly.Api/Rewardly.Api.csproj
+          dotnet restore src/Rewardly.Application/Rewardly.Application.csproj
+          dotnet restore src/Rewardly.Domain/Rewardly.Domain.csproj
+          dotnet restore src/Rewardly.Infra/Rewardly.Infra.csproj
+          dotnet restore tests/Rewardly.UnitTests/Rewardly.UnitTests.csproj
+          dotnet restore tests/Rewardly.IntegrationTests/Rewardly.IntegrationTests.csproj
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: restore
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Build API project
+        run: dotnet build src/Rewardly.Api/Rewardly.Api.csproj -c $BUILD_CONFIGURATION
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Run unit tests
+        run: dotnet test tests/Rewardly.UnitTests/Rewardly.UnitTests.csproj -c $BUILD_CONFIGURATION --logger "trx;LogFileName=unit-tests.trx"
+
+      - name: Run integration tests
+        run: dotnet test tests/Rewardly.IntegrationTests/Rewardly.IntegrationTests.csproj -c $BUILD_CONFIGURATION --logger "trx;LogFileName=integration-tests.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            **/*.trx
+
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    needs: tests
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore all projects
+        run: |
+          dotnet restore src/Rewardly.Api/Rewardly.Api.csproj
+          dotnet restore src/Rewardly.Application/Rewardly.Application.csproj
+          dotnet restore src/Rewardly.Domain/Rewardly.Domain.csproj
+          dotnet restore src/Rewardly.Infra/Rewardly.Infra.csproj
+          dotnet restore tests/Rewardly.UnitTests/Rewardly.UnitTests.csproj
+          dotnet restore tests/Rewardly.IntegrationTests/Rewardly.IntegrationTests.csproj
+
+      - name: Check code formatting
+        run: dotnet format analyzers --verify-no-changes
+
+      - name: Run static analysis (warnings as errors)
+        run: |
+          dotnet build src/Rewardly.Api/Rewardly.Api.csproj -c $BUILD_CONFIGURATION -warnaserror
+          dotnet build src/Rewardly.Application/Rewardly.Application.csproj -c $BUILD_CONFIGURATION -warnaserror
+          dotnet build src/Rewardly.Domain/Rewardly.Domain.csproj -c $BUILD_CONFIGURATION -warnaserror
+          dotnet build src/Rewardly.Infra/Rewardly.Infra.csproj -c $BUILD_CONFIGURATION -warnaserror
