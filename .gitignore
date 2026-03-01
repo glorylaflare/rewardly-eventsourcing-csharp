@@ -1,0 +1,92 @@
+# =========================
+# Build artifacts
+# =========================
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/TestResults/
+
+# .NET / NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# =========================
+# User / IDE files
+# =========================
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains Rider / ReSharper
+.idea/
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Logs and diagnostics
+# =========================
+*.log
+*.tmp
+*.temp
+logs/
+
+# Coverage / test tools
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# =========================
+# Environment and secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# Local appsettings overrides (often contain secrets)
+appsettings.Local.json
+appsettings.*.local.json
+
+# User secrets and certs (local dev)
+secrets/
+*.pfx
+*.snk
+
+# =========================
+# Docker / container local files
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Optional local scripts/output
+# =========================
+*.pid
+*.seed
+
+# Remove docs
+docs/

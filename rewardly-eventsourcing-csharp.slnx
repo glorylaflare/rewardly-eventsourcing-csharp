@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Rewardly.Api/Rewardly.Api.csproj" Id="891d4b86-7ef4-46de-a4b5-349564568f36" />
+    <Project Path="src/Rewardly.Application/Rewardly.Application.csproj" Id="2fd05fb1-7587-4ce7-8e3d-d64bf21bfb8d" />
+    <Project Path="src/Rewardly.Domain/Rewardly.Domain.csproj" Id="276ef6c1-e0d8-44f8-bdd6-dcef5d88fc05" />
+    <Project Path="src/Rewardly.Infra/Rewardly.Infra.csproj" Id="c472797e-2cce-472f-959b-eeed33454a40" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Rewardly.Tests/Rewardly.Tests.csproj" Id="806d2977-5078-4d88-824e-cb9a43fe4350" />
+  </Folder>
+</Solution>
