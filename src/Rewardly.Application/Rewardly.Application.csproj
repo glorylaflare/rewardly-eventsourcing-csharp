@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\v1\" />
+    <Folder Include="Commands\v1\CreateAccount\" />
+    <Folder Include="Commands\v1\CreditPoints\" />
+    <Folder Include="Commands\v1\DebitPoints\" />
+    <Folder Include="Commands\v1\ExpirePoints\" />
+    <Folder Include="Commands\v1\BlockAccount\" />
     <Folder Include="Dispatchers\" />
     <Folder Include="Requests\" />
     <Folder Include="Pipelines\" />
