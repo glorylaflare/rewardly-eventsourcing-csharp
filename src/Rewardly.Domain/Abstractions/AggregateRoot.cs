@@ -6,6 +6,7 @@ namespace Rewardly.Domain.Abstractions;
 public abstract class AggregateRoot : IAggregateRoot
 {
     private readonly List<IEvent> _uncommittedEvents = new();
+    private static readonly Dictionary<Type, Dictionary<Type, MethodInfo>> _applyMethodsCache = new();
 
     public Guid Id { get; protected set; }
     public int Version { get; private set; }
@@ -35,14 +36,24 @@ public abstract class AggregateRoot : IAggregateRoot
 
     private void ApplyEvent(IEvent @event)
     {
-        var method = GetType().GetMethod(
-            "Apply",
-            BindingFlags.Instance | BindingFlags.NonPublic,
-            null,
-            new Type[] { @event.GetType() },
-            null
-        );
+        var aggregateType = GetType();
 
-        method?.Invoke(this, new object[] { @event });
+        if (!_applyMethodsCache.TryGetValue(aggregateType, out var methods))
+        {
+            methods = aggregateType
+                .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+                .Where(m => m.Name == "Apply" && m.GetParameters().Length == 1)
+                .ToDictionary(
+                    m => m.GetParameters()[0].ParameterType,
+                    m => m
+                );
+            
+            _applyMethodsCache[aggregateType] = methods;
+        }
+
+        if (methods.TryGetValue(@event.GetType(), out var method))
+        {
+            method.Invoke(this, new object[] { @event });
+        }
     }
 }
