@@ -1,7 +1,7 @@
 ﻿namespace Rewardly.Domain.Interfaces.v1;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TAggregate> where TAggregate : IAggregateRoot
 {
-    Task<TEntity> GetById(Guid id);
-    Task SaveAsync(TEntity entity);
+    Task<TAggregate> GetById(Guid id);
+    Task SaveAsync(TAggregate entity);
 }
