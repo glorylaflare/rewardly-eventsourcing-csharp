@@ -7,10 +7,12 @@ public abstract class DomainEvent : IEvent
     public Guid AggregateId { get; protected set; }
     public DateTime OccurredAt { get; protected set; }
     public int Version { get; set; }
+    public Dictionary<string, object> Metadata { get; protected set; }
 
     protected DomainEvent(Guid aggregateId) 
     { 
         AggregateId = aggregateId;
         OccurredAt = DateTime.UtcNow;
+        Metadata = new Dictionary<string, object>();
     }
 }
