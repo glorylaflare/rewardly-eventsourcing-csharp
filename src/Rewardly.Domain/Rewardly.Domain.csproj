@@ -6,16 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Aggregates\LoyaltyAccount\" />
-    <Folder Include="Events\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Models\" />
-    <Folder Include="Strategies\" />
-    <Folder Include="Specifications\" />
-    <Folder Include="ValueObjects\" />
-  </ItemGroup>
-
 </Project>

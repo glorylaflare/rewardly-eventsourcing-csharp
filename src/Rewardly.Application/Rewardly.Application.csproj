@@ -7,11 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\v1\" />
+    <Folder Include="Commands\v1\CreateAccount\" />
+    <Folder Include="Commands\v1\CreditPoints\" />
+    <Folder Include="Commands\v1\DebitPoints\" />
+    <Folder Include="Commands\v1\ExpirePoints\" />
+    <Folder Include="Commands\v1\BlockAccount\" />
     <Folder Include="Dispatchers\" />
     <Folder Include="Requests\" />
     <Folder Include="Pipelines\" />
     <Folder Include="Queries\v1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
