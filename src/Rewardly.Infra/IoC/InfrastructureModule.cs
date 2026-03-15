@@ -7,8 +7,8 @@ public static class InfrastructureModule
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddScoped<IEventStore, EventStore>();
-        services.AddScoped<IRepository<>, Repository>();
+        //services.AddScoped<IEventStore, EventStore>();
+        //services.AddScoped<IRepository<>, Repository>();
 
         return services;
     }
