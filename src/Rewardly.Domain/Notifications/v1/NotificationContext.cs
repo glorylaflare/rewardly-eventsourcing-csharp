@@ -7,7 +7,7 @@ public sealed class NotificationContext : INotification
     private readonly List<Notification> _notifications = new();
 
     public IReadOnlyCollection<Notification> Notifications
-        => _notifications;
+        => _notifications.AsReadOnly();
 
     public bool HasNotifications
         => _notifications.Any();

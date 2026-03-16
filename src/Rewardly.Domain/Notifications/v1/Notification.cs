@@ -1,6 +1,6 @@
 ﻿namespace Rewardly.Domain.Notifications.v1;
 
-public class Notification
+public sealed class Notification
 {
     public string Code { get; private set; }
     public string Message { get; private set; }
