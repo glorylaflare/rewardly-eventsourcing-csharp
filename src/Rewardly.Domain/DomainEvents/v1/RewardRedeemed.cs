@@ -3,11 +3,11 @@
 public sealed class RewardRedeemed : DomainEvent
 {
     public Guid RewardId { get; init; }
-    public int PointsCost { get; init; }
+    public int Points { get; init; }
 
-    public RewardRedeemed(Guid aggregateId, Guid rewardId, int pointsCost) : base(aggregateId)
+    public RewardRedeemed(Guid aggregateId, Guid rewardId, int points) : base(aggregateId)
     {
         RewardId = rewardId;
-        PointsCost = pointsCost;
+        Points = points;
     }
 }
