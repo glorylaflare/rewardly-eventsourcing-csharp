@@ -45,7 +45,6 @@ public static class LoggerExtensions
         {
             LogType.Warning => LogLevel.Warning,
             LogType.Error => LogLevel.Error,
-            LogType.Critical => LogLevel.Critical,
             _ => LogLevel.Information
         };
 
