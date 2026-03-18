@@ -16,11 +16,17 @@ public sealed class Balance
 
     public void Add(int points)
     {
+        if (points <= 0)
+            throw new DomainException("Points must be greater than zero");
+
         Value += points;
     }
 
     public void Subtract(int points)
     {
+        if (points <= 0)
+            throw new DomainException("Points must be greater than zero");
+
         if (Value < points)
             throw new DomainException("Insufficient balance");
 
