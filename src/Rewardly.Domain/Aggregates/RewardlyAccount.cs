@@ -2,6 +2,7 @@
 using Rewardly.Domain.DomainEvents.v1;
 using Rewardly.Domain.Enums;
 using Rewardly.Domain.Exceptions;
+using Rewardly.Domain.Specifications;
 using Rewardly.Domain.ValueObjects;
 
 namespace Rewardly.Domain.Aggregates;
@@ -114,7 +115,7 @@ public sealed class RewardlyAccount : AggregateRoot
 
     private void EnsureActive()
     {
-        if (Status != AccountStatus.Active)
+        if (!new AccountMustBeActive().IsSatisfiedBy(this))
             throw new DomainException("Account is not active");
     }
 
@@ -126,7 +127,7 @@ public sealed class RewardlyAccount : AggregateRoot
 
     private void EnsureSufficientBalance(int points)
     {
-        if (Balance.Value < points)
+        if (!new HasSufficientBalance(points).IsSatisfiedBy(this))
             throw new DomainException("Insufficient balance");
     }
 }
