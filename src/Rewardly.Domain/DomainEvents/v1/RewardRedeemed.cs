@@ -1,6 +1,4 @@
-﻿using Rewardly.Domain.Exceptions;
-
-namespace Rewardly.Domain.DomainEvents.v1;
+﻿namespace Rewardly.Domain.DomainEvents.v1;
 
 public sealed class RewardRedeemed : DomainEvent
 {
