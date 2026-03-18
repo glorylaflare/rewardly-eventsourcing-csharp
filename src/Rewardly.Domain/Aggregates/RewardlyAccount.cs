@@ -69,7 +69,7 @@ public sealed class RewardlyAccount : AggregateRoot
             return;
 
         if (Balance.Value > 0)
-            throw new DomainException("You can't cancel a account with remain points");
+            throw new DomainException("You can't cancel an account with remaining points");
 
         RaiseEvent(new AccountCancelled(Id, reason));
     }
