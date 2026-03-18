@@ -21,7 +21,7 @@ public abstract class AggregateRoot : IAggregateRoot
     protected void RaiseEvent(IEvent @event)
     {
         if (@event is DomainEvent domainEvent)
-            domainEvent.SetVersion(@event.Version + 1);
+            domainEvent.SetVersion(Version + 1);
 
         ApplyEvent(@event);
         _uncommittedEvents.Add(@event);
