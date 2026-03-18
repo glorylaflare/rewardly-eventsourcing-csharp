@@ -9,7 +9,7 @@ namespace Rewardly.Domain.Aggregates;
 public sealed class RewardlyAccount : AggregateRoot
 {
     public Guid UserId { get; private set; }
-    public Balance Balance { get; private set; } = null;
+    public Balance Balance { get; private set; } = null!;
     public AccountStatus Status { get; private set; }
 
     private RewardlyAccount() { }
