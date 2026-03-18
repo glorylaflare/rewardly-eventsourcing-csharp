@@ -2,13 +2,14 @@
 using Rewardly.Domain.DomainEvents.v1;
 using Rewardly.Domain.Enums;
 using Rewardly.Domain.Exceptions;
+using Rewardly.Domain.ValueObjects;
 
 namespace Rewardly.Domain.Aggregates;
 
 public sealed class RewardlyAccount : AggregateRoot
 {
     public Guid UserId { get; private set; }
-    public int Balance { get; private set; }
+    public Balance Balance { get; private set; } = null!;
     public AccountStatus Status { get; private set; }
 
     private RewardlyAccount() { }
@@ -22,48 +23,36 @@ public sealed class RewardlyAccount : AggregateRoot
 
     public void CreditPoint(int points, string? reason)
     {
-        if (Status != AccountStatus.Active)
-            throw new DomainException("Account is not active");
-
-        if (points <= 0)
-            throw new DomainException("Points must be greater than zero");
-
+        EnsureActive();
+        ValidatePoints(points);
         RaiseEvent(new PointsCredited(Id, points, reason));
     }
 
     public void DebitPoints(int points, string reason)
     {
-        if (Status != AccountStatus.Active)
-            throw new DomainException("Account is not active");
-
-        if (points <= 0)
-            throw new DomainException("Invalid points");
-
-        if (Balance < points)
-            throw new DomainException("Insufficient balance");
-
+        EnsureActive();
+        ValidatePoints(points);
+        EnsureSufficientBalance(points);
         RaiseEvent(new PointsDebited(Id, points, reason));
     }
 
     public void RewardRedeem(Guid rewardId, int points)
     {
-        //TODO: Validar rewardId
-
-        if (points <= 0)
-            throw new DomainException("Invalid points");
-
-        if (Balance < points)
-            throw new DomainException("Insufficient balance");
-
+        EnsureActive();
+        ValidatePoints(points);
+        EnsureSufficientBalance(points);
         RaiseEvent(new RewardRedeemed(Id, rewardId, points));
     }
 
     public void ExpirePoints(int points)
     {
-        if (points <= 0)
-            throw new DomainException("Invalid points");
+        EnsureActive();
+        ValidatePoints(points);
 
-        RaiseEvent(new PointsExpired(Id, points));
+        if (Balance.Value > points)
+        {
+            RaiseEvent(new PointsExpired(Id, points));
+        }
     }
 
     public void Block(string reason)
@@ -79,8 +68,8 @@ public sealed class RewardlyAccount : AggregateRoot
         if (Status == AccountStatus.Cancelled)
             return;
 
-        if (Balance > 0)
-            throw new DomainException("You can't cancel a account with remain points");
+        if (Balance.Value > 0)
+            throw new DomainException("You can't cancel an account with remaining points");
 
         RaiseEvent(new AccountCancelled(Id, reason));
     }
@@ -89,28 +78,28 @@ public sealed class RewardlyAccount : AggregateRoot
     {
         Id = @event.AggregateId;
         UserId = @event.UserId;
-        Balance = 0;
+        Balance = new Balance(0);
         Status = AccountStatus.Active;
     }
 
     private void Apply(PointsCredited @event)
     {
-        Balance += @event.Points;
+        Balance.Add(@event.Points);
     }
 
     private void Apply(PointsDebited @event)
     {
-        Balance -= @event.Points;
+        Balance.Subtract(@event.Points);
     }
 
     private void Apply(PointsExpired @event)
     {
-        Balance -= @event.Points;
+        Balance.Subtract(@event.Points);
     }
 
     private void Apply(RewardRedeemed @event)
     {
-        Balance -= @event.Points;
+        Balance.Subtract(@event.Points);
     }
 
     private void Apply(AccountBlocked @event)
@@ -121,5 +110,23 @@ public sealed class RewardlyAccount : AggregateRoot
     private void Apply(AccountCancelled @event)
     {
         Status = AccountStatus.Cancelled;
+    }
+
+    private void EnsureActive()
+    {
+        if (Status != AccountStatus.Active)
+            throw new DomainException("Account is not active");
+    }
+
+    private void ValidatePoints(int points)
+    {
+        if (points <= 0)
+            throw new DomainException("Invalid points");
+    }
+
+    private void EnsureSufficientBalance(int points)
+    {
+        if (Balance.Value < points)
+            throw new DomainException("Insufficient balance");
     }
 }

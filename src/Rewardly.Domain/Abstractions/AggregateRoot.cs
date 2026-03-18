@@ -1,4 +1,5 @@
-﻿using Rewardly.Domain.Interfaces.v1;
+﻿using Rewardly.Domain.DomainEvents.v1;
+using Rewardly.Domain.Interfaces.v1;
 using System.Reflection;
 
 namespace Rewardly.Domain.Abstractions;
@@ -19,7 +20,9 @@ public abstract class AggregateRoot : IAggregateRoot
 
     protected void RaiseEvent(IEvent @event)
     {
-        @event.Version = Version + 1;
+        if (@event is DomainEvent domainEvent)
+            domainEvent.SetVersion(Version + 1);
+
         ApplyEvent(@event);
         _uncommittedEvents.Add(@event);
         Version = @event.Version;
