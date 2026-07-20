@@ -2,8 +2,9 @@
 
 public sealed class AccountCancelled : DomainEvent
 {
-    public string Reason { get; init; }
+    public string Reason { get; }
 
+    [JsonConstructor]
     public AccountCancelled(Guid aggregateId, string? reason) 
         : base(aggregateId)
     {

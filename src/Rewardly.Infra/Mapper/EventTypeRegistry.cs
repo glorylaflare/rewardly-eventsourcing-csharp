@@ -1,4 +1,5 @@
 ﻿using Rewardly.Domain.DomainEvents.v1;
+using Rewardly.Domain.Exceptions;
 
 namespace Rewardly.Infra.Mapper;
 
@@ -22,6 +23,6 @@ public static class EventTypeRegistry
             return type;
         }
 
-        throw new InvalidOperationException($"Event '{eventType}' is not registered.");
+        throw new InvalidEventTypeException($"Event '{eventType}' is not registered.");
     }
 }

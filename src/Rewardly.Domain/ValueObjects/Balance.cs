@@ -1,6 +1,4 @@
-﻿using Rewardly.Domain.Exceptions;
-
-namespace Rewardly.Domain.ValueObjects;
+﻿namespace Rewardly.Domain.ValueObjects;
 
 public sealed class Balance
 {

@@ -2,8 +2,9 @@
 
 public sealed class PointsExpired : DomainEvent
 {
-    public int Points { get; init; }
+    public int Points { get; }
 
+    [JsonConstructor]
     public PointsExpired(Guid aggregateId, int points)
         : base(aggregateId)
     {

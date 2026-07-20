@@ -2,9 +2,10 @@
 
 public sealed class PointsCredited : DomainEvent
 {
-    public int Points { get; init; }
-    public string Reason { get; init; }
+    public int Points { get; }
+    public string Reason { get; }
 
+    [JsonConstructor]
     public PointsCredited(Guid aggregateId, int points, string? reason) 
         : base(aggregateId)
     {
