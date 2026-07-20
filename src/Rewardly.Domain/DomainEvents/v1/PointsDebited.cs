@@ -1,12 +1,11 @@
-﻿using Rewardly.Domain.Exceptions;
-
-namespace Rewardly.Domain.DomainEvents.v1;
+﻿namespace Rewardly.Domain.DomainEvents.v1;
 
 public sealed class PointsDebited : DomainEvent
 {
-    public int Points { get; init; }
-    public string Reason { get; init; }
+    public int Points { get; }
+    public string Reason { get; }
 
+    [JsonConstructor]
     public PointsDebited(Guid aggregateId, int points, string reason)
         : base(aggregateId)
     {

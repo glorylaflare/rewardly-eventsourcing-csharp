@@ -2,6 +2,7 @@
 
 public interface IEvent
 {
+    Guid EventId { get; }
     Guid AggregateId { get; }
     DateTime OccurredAt { get; }
     int Version { get; }

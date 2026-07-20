@@ -2,9 +2,10 @@
 
 public sealed class RewardRedeemed : DomainEvent
 {
-    public Guid RewardId { get; init; }
-    public int Points { get; init; }
+    public Guid RewardId { get; }
+    public int Points { get; }
 
+    [JsonConstructor]
     public RewardRedeemed(Guid aggregateId, Guid rewardId, int points) : base(aggregateId)
     {
         RewardId = rewardId;
