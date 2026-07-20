@@ -4,13 +4,15 @@ namespace Rewardly.Domain.DomainEvents.v1;
 
 public abstract class DomainEvent : IEvent
 {
+    public Guid EventId { get; protected set; }
     public Guid AggregateId { get; protected set; }
     public DateTime OccurredAt { get; protected set; }
     public int Version { get; private set; }
     public IReadOnlyDictionary<string, object> Metadata { get; protected set; }
 
     protected DomainEvent(Guid aggregateId) 
-    { 
+    {
+        EventId = Guid.NewGuid();
         AggregateId = aggregateId;
         OccurredAt = DateTime.UtcNow;
         Metadata = new Dictionary<string, object>();

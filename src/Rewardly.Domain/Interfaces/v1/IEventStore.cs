@@ -2,6 +2,6 @@
 
 public interface IEventStore
 {
-    Task SaveEventAsync(Guid aggregateId, IEnumerable<IEvent> events);
-    Task<IEnumerable<IEvent>> GetEventsAsync(Guid aggregateId);
+    Task SaveAsync(IEnumerable<IEvent> events, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<IEvent>> LoadAsync(Guid aggregateId, CancellationToken cancellationToken);
 }
