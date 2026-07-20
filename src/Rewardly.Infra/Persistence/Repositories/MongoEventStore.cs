@@ -23,8 +23,14 @@ public class MongoEventStore : IEventStore
             cancellationToken: cancellationToken);
     }
 
-    public Task<IReadOnlyCollection<IEvent>> LoadAsync(Guid aggregateId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<IEvent>> LoadAsync(Guid aggregateId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException("MongoDB LoadAsync implementation needed");
+        var documents = await _collection.Find(x => x.AggregateId == aggregateId)
+            .SortBy(x => x.Version)
+            .ToListAsync(cancellationToken);
+
+        return documents.Select(EventMapper.ToDomainEvent)
+            .ToList()
+            .AsReadOnly();
     }
 }

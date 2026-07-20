@@ -1,4 +1,5 @@
-﻿using Rewardly.Domain.Interfaces.v1;
+﻿using Rewardly.Domain.DomainEvents.v1;
+using Rewardly.Domain.Interfaces.v1;
 using Rewardly.Infra.Persistence;
 using System.Text.Json;
 
@@ -22,5 +23,29 @@ public static class EventMapper
             aggregateId: @event.AggregateId,
             metadata: @event.Metadata
         );
+    }
+
+    public static IEvent ToDomainEvent(EventDocument document)
+    {
+        var eventType = EventTypeRegistry.GetEventType(document.EventType);
+
+        var domainEvent = JsonSerializer.Deserialize(document.Payload, eventType) as IEvent;
+
+        if (domainEvent is null)
+        {
+            throw new InvalidOperationException($"Unable to deserialize event '{document.EventType}'.");
+        }
+
+        if (domainEvent is DomainEvent e)
+        {
+            e.RestoreState(
+                document.EventId, 
+                document.AggregateId, 
+                document.OccurredAt, 
+                document.Version, 
+                document.Metadata);
+        }
+
+        return domainEvent;
     }
 }
