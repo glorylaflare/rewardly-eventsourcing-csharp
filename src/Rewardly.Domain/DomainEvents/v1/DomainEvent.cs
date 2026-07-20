@@ -4,7 +4,7 @@ namespace Rewardly.Domain.DomainEvents.v1;
 
 public abstract class DomainEvent : IEvent
 {
-    public Guid EventId { get; protected set; }
+    public Guid EventId { get; }
     public Guid AggregateId { get; protected set; }
     public DateTime OccurredAt { get; protected set; }
     public int Version { get; private set; }
