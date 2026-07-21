@@ -6,7 +6,8 @@ public sealed class RewardRedeemed : DomainEvent
     public int Points { get; }
 
     [JsonConstructor]
-    public RewardRedeemed(Guid aggregateId, Guid rewardId, int points) : base(aggregateId)
+    public RewardRedeemed(Guid aggregateId, Guid rewardId, int points) 
+        : base(aggregateId)
     {
         RewardId = rewardId;
         Points = points;

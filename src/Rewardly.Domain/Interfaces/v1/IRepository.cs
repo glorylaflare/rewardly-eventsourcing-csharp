@@ -2,6 +2,6 @@
 
 public interface IRepository<TAggregate> where TAggregate : IAggregateRoot
 {
-    Task<TAggregate> GetById(Guid id);
-    Task SaveAsync(TAggregate entity);
+    Task<TAggregate> FindOneAsync(Guid id, CancellationToken cancellationToken);
+    Task SaveAsync(TAggregate account, CancellationToken cancellationToken);
 }

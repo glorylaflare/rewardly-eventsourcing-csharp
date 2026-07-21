@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Rewardly.Api.Controllers;
+﻿namespace Rewardly.Api.Controllers;
 
 [Route("api/v1/rewardly")]
 [ApiController]

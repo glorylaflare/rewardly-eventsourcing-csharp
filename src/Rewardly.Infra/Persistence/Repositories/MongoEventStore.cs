@@ -16,7 +16,8 @@ public class MongoEventStore : IEventStore
 
     public async Task SaveAsync(IEnumerable<IEvent> events, CancellationToken cancellationToken)
     {
-        var documents = events.Select(EventMapper.ToDocument).ToList();
+        List<EventDocument>? documents = events.Select(EventMapper.ToDocument)
+            .ToList();
 
         await _collection.InsertManyAsync(
             documents, 
@@ -25,7 +26,7 @@ public class MongoEventStore : IEventStore
 
     public async Task<IReadOnlyCollection<IEvent>> LoadAsync(Guid aggregateId, CancellationToken cancellationToken)
     {
-        var documents = await _collection.Find(x => x.AggregateId == aggregateId)
+        List<EventDocument>? documents = await _collection.Find(x => x.AggregateId == aggregateId)
             .SortBy(x => x.Version)
             .ToListAsync(cancellationToken);
 
