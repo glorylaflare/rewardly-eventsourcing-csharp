@@ -1,6 +1,5 @@
 ﻿using Rewardly.Domain.DomainEvents.v1;
 using Rewardly.Domain.Interfaces.v1;
-using System.Reflection;
 
 namespace Rewardly.Domain.Abstractions;
 
@@ -30,7 +29,7 @@ public abstract class AggregateRoot : IAggregateRoot
 
     public void LoadFromHistory(IEnumerable<IEvent> events)
     {
-        foreach (var @event in events)
+        foreach (IEvent @event in events)
         {
             ApplyEvent(@event);
             Version = @event.Version;
@@ -39,9 +38,9 @@ public abstract class AggregateRoot : IAggregateRoot
 
     private void ApplyEvent(IEvent @event)
     {
-        var aggregateType = GetType();
+        Type? aggregateType = GetType();
 
-        if (!_applyMethodsCache.TryGetValue(aggregateType, out var methods))
+        if (!_applyMethodsCache.TryGetValue(aggregateType, out Dictionary<Type, MethodInfo>? methods))
         {
             methods = aggregateType
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)

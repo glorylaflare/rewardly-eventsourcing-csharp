@@ -1,7 +1,7 @@
 ﻿using Rewardly.Domain.Abstractions;
 using Rewardly.Domain.DomainEvents.v1;
 using Rewardly.Domain.Enums;
-using Rewardly.Domain.Exceptions;
+using Rewardly.Domain.Interfaces.v1;
 using Rewardly.Domain.Specifications;
 using Rewardly.Domain.ValueObjects;
 
@@ -17,8 +17,22 @@ public sealed class RewardlyAccount : AggregateRoot
 
     public static RewardlyAccount Create(Guid accountId, Guid userId)
     {
-        var account = new RewardlyAccount();
+        RewardlyAccount? account = new RewardlyAccount();
         account.RaiseEvent(new AccountCreated(accountId, userId));
+        return account;
+    }
+
+    public static RewardlyAccount FromHistory(IEnumerable<IEvent> events)
+    {
+        List<IEvent>? history = events.ToList();
+
+        if (history.Count == 0)
+        {
+            throw new InvalidOperationException("History cannot be empty.");
+        }
+
+        RewardlyAccount? account = new RewardlyAccount();
+        account.LoadFromHistory(events);
         return account;
     }
 

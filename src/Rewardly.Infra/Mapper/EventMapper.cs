@@ -9,7 +9,7 @@ public static class EventMapper
 {
     public static EventDocument ToDocument(IEvent @event)
     {
-        var payload = JsonSerializer.Serialize(
+        string? payload = JsonSerializer.Serialize(
             @event,
             @event.GetType(),
             JsonSerializerOptions.Default);
@@ -27,9 +27,9 @@ public static class EventMapper
 
     public static IEvent ToDomainEvent(EventDocument document)
     {
-        var eventType = EventTypeRegistry.GetEventType(document.EventType);
+        Type? eventType = EventTypeRegistry.GetEventType(document.EventType);
 
-        var domainEvent = JsonSerializer.Deserialize(document.Payload, eventType) as IEvent;
+        IEvent? domainEvent = JsonSerializer.Deserialize(document.Payload, eventType) as IEvent;
 
         if (domainEvent is null)
         {
