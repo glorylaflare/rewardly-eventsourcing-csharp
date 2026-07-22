@@ -14,7 +14,9 @@ public sealed class RewardlyAccountRepository : IRepository<RewardlyAccount>
 
     public async Task<RewardlyAccount> FindOneAsync(Guid id, CancellationToken cancellationToken)
     {
-        IReadOnlyCollection<IEvent>? events = await _eventStore.LoadAsync(id, cancellationToken);
+        IReadOnlyCollection<IEvent>? events = await _eventStore.LoadAsync(
+            aggregateId: id, 
+            cancellationToken);
 
         if (!events.Any())
         {
@@ -26,14 +28,20 @@ public sealed class RewardlyAccountRepository : IRepository<RewardlyAccount>
 
     public async Task SaveAsync(RewardlyAccount account, CancellationToken cancellationToken)
     {
-        IReadOnlyCollection<IEvent>? events = account.GetUncommittedEvents();
+        IReadOnlyCollection<IEvent>? uncommittedEvents = account.GetUncommittedEvents();
 
-        if (events.Count == 0)
+        if (uncommittedEvents.Count == 0)
         {
             return;
         }
 
-        await _eventStore.SaveAsync(events, cancellationToken);
+        int expectedVersion = account.Version - uncommittedEvents.Count;
+
+        await _eventStore.SaveAsync(
+            aggregateId: account.Id, 
+            expectedVersion, 
+            uncommittedEvents, 
+            cancellationToken);
 
         account.ClearUncommittedEvents();
     }
