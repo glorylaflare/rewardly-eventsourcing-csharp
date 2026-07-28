@@ -1,8 +1,9 @@
 ﻿namespace Rewardly.Application.Logging;
 
-public enum LogType
+public enum AddLogType
 {
+    Debug,
     Info,
-    Warning,
+    Warn,
     Error
 }

@@ -4,83 +4,120 @@ namespace Rewardly.Application.Logging;
 
 public static class LoggerExtensions
 {
-   public static void LogAddRequest(
-       this ILogger logger,
-       object request,
-       string correlationId,
-       LogType type,
-       string description,
-       IDictionary<string, object>? metadata = null)
-    {
-        var normalizedCorrelation = NormalizedCorrelationId(correlationId, type);
-        var context = BuildContext(metadata, normalizedCorrelation, request);
+    private const int CORRELATION_ID_SHORT_LENGTH = 8;
 
-        using (logger.BeginScope(context))
-        {
-            Log(logger, type, description);
-        }
+    public static void LogAddRequest(
+        this ILogger logger,
+        string operation,
+        AddLogType type,
+        string description,
+        string? correlationId = null,
+        IDictionary<string, object>? metadata = null)
+    {
+        LogAddRequestInternal(logger, null, operation, correlationId, type, description, metadata);
     }
 
     public static void LogAddRequest(
         this ILogger logger,
         Exception exception,
-        object request,
-        string correlationId,
-        LogType type,
+        string operation,
+        AddLogType type,
         string description,
+        string? correlationId = null,
         IDictionary<string, object>? metadata = null)
     {
-        var normalizedCorrelation = NormalizedCorrelationId(correlationId, type);
-        var context = BuildContext(metadata, normalizedCorrelation, request);
-     
+        LogAddRequestInternal(logger, exception, operation, correlationId, type, description, metadata);
+    }
+
+    public static IDisposable BeginCorrelationScope(this ILogger logger, string? correlationId = null)
+    {
+        string? safeCorrelationId = GetCorrelationIdOrDefault(correlationId) ?? Guid.NewGuid().ToString("N");
+
+        var scopeContext = new Dictionary<string, object>
+        {
+            ["CorrelationId"] = safeCorrelationId,
+            ["CorrelationIdShort"] = BuildShortCorrelationId(safeCorrelationId),
+        };
+
+        return logger.BeginScope(scopeContext)!;
+    }
+
+    private static void LogAddRequestInternal(
+        ILogger logger,
+        Exception? exception,
+        string operation,
+        string? correlationId,
+        AddLogType type,
+        string description,
+        IDictionary<string, object>? metadata)
+    {
+        IDictionary<string, object>? context = BuildContext(metadata, correlationId, operation);
+
         using (logger.BeginScope(context))
         {
-            Log(logger, type, description, exception);
+            Log(logger, operation, type, description, exception);
         }
     }
 
-    private static void Log(ILogger logger, LogType type, string description, Exception? exception = null)
+    private static void Log(
+        ILogger logger,
+        string operation,
+        AddLogType type,
+        string description,
+        Exception? exception = null)
     {
-        var logLevel = type switch
+        LogLevel logLevel = type switch
         {
-            LogType.Warning => LogLevel.Warning,
-            LogType.Error => LogLevel.Error,
+            AddLogType.Debug => LogLevel.Debug,
+            AddLogType.Warn => LogLevel.Warning,
+            AddLogType.Error => LogLevel.Error,
             _ => LogLevel.Information
         };
 
+        var normalizedType = type.ToString().ToUpperInvariant();
+        var normalizedDescription = string.IsNullOrWhiteSpace(description) ? string.Empty : description;
+
         if (exception is null)
         {
-            logger.Log(logLevel, description);
+            logger.Log(logLevel, $"[{normalizedType}] [{operation}] {normalizedDescription}");
             return;
         }
 
-        logger.Log(logLevel, exception, description);
+        logger.Log(logLevel, exception, $"[{normalizedType}] [{operation}] {normalizedDescription}");
     }
 
-    private static Dictionary<string, object> BuildContext(IDictionary<string, object>? metadata, string correlationId, object request)
+    private static IDictionary<string, object> BuildContext(
+        IDictionary<string, object>? metadata,
+        string? correlationId,
+        string operation)
     {
-        var context = new Dictionary<string, object>(metadata ?? new Dictionary<string, object>())
+        var context = new Dictionary<string, object>(metadata ?? new Dictionary<string, object>());
+
+        context["Operation"] = operation;
+
+        if (!string.IsNullOrWhiteSpace(correlationId) && !context.ContainsKey("CorrelationId"))
         {
-            ["CorrelationId"] = correlationId,
-            ["Request"] = request.GetType().Name
-        };
+            context["CorrelationId"] = correlationId;
+            context["CorrelationIdShort"] = BuildShortCorrelationId(correlationId);
+        }
 
         return context;
     }
 
-    private static string NormalizedCorrelationId(string correlationId, LogType type) 
+    private static string? GetCorrelationIdOrDefault(string? correlationId)
     {
-        if (string.IsNullOrEmpty(correlationId))
+        return string.IsNullOrWhiteSpace(correlationId) ? null : correlationId;
+    }
+
+    private static string BuildShortCorrelationId(string correlationId)
+    {
+        if (string.IsNullOrWhiteSpace(correlationId))
         {
             return string.Empty;
         }
 
-        if (type == LogType.Info)
-        {
-            return correlationId;
-        }
-
-        var segments = correlationId.Split('-', StringSplitOptions.RemoveEmptyEntries);
-        return segments.Length == 0 ? correlationId : segments[^1].ToUpperInvariant();
+        return correlationId.Length <= CORRELATION_ID_SHORT_LENGTH
+            ? correlationId.ToUpperInvariant()
+            : correlationId[^CORRELATION_ID_SHORT_LENGTH..].ToUpperInvariant();
     }
 }
