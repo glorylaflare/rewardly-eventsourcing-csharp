@@ -14,7 +14,7 @@ public class RewardlyController : ApiControllerBase
         _commandBus = commandBus;
     }
 
-    [HttpPost("/accounts")]
+    [HttpPost("accounts")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostCreateAccount([FromBody] CreateAccountCommand command)

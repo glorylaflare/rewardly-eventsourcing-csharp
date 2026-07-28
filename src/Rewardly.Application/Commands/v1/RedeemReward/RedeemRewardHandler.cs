@@ -4,9 +4,9 @@ public class RedeemRewardHandler : ICommandHandler<RedeemRewardCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public RedeemRewardHandler(IRewardlyAccountService servioce)
+    public RedeemRewardHandler(IRewardlyAccountService service)
     {
-        _service = servioce;
+        _service = service;
     }
 
     public async Task<bool> HandleAsync(RedeemRewardCommand command, CancellationToken cancellationToken)
