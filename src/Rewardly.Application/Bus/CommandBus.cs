@@ -1,6 +1,4 @@
-﻿using Rewardly.Application.Interfaces.Bus;
-
-namespace Rewardly.Application.Bus;
+﻿namespace Rewardly.Application.Bus;
 
 public class CommandBus : ICommandBus
 {
@@ -16,12 +14,5 @@ public class CommandBus : ICommandBus
         CommandExecutionContext? context = _resolver.Resolve(command);
 
         return await ((dynamic)context.Handler).HandleAsync((dynamic)command, cancellationToken);
-    }
-
-    public async Task SendAsync(ICommand command, CancellationToken cancellationToken)
-    {
-        CommandExecutionContext? context = _resolver.Resolve(command);
-
-        await ((dynamic)context.Handler).HandleAsync((dynamic)command, cancellationToken);
     }
 }

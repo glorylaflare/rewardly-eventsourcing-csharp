@@ -1,6 +1,4 @@
-﻿using Rewardly.Application.Interfaces.Bus;
-
-namespace Rewardly.Application.Bus;
+﻿namespace Rewardly.Application.Bus;
 
 public sealed class CommandExecutionContext
 {
