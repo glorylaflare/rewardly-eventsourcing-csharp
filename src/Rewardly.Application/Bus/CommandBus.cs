@@ -15,13 +15,13 @@ public class CommandBus : ICommandBus
     {
         CommandExecutionContext? context = _resolver.Resolve(command);
 
-        return await ((dynamic)context.Handler).HandlerAsync((dynamic)command, cancellationToken);
+        return await ((dynamic)context.Handler).HandleAsync((dynamic)command, cancellationToken);
     }
 
     public async Task SendAsync(ICommand command, CancellationToken cancellationToken)
     {
         CommandExecutionContext? context = _resolver.Resolve(command);
 
-        await ((dynamic)context.Handler).HandlerAsync((dynamic)command, cancellationToken);
+        await ((dynamic)context.Handler).HandleAsync((dynamic)command, cancellationToken);
     }
 }

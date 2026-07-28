@@ -4,6 +4,6 @@ namespace Rewardly.Application.Commands.Base;
 
 public abstract class CommandBase<TResponse> : ICommand<TResponse>
 {
-    public Guid CorrelationId => Guid.NewGuid();
-    public DateTime CreatedAt => DateTime.UtcNow;
+    public Guid CorrelationId { get; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; } = DateTime.UtcNow;
 }

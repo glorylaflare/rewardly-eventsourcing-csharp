@@ -13,9 +13,9 @@ public class ResponseBase<T>
         Errors = errors ?? Array.Empty<string>();
     }
 
-    public static ResponseBase<T> Ok(T Data) 
-        => new(true, Data, null);
+    public static ResponseBase<T> Ok(T data) 
+        => new(true, data, null);
 
-    public static ResponseBase<T> Fail(params string[] Erros)
-        => new(false, default, Erros);
+    public static ResponseBase<T> Fail(params string[] erros)
+        => new(false, default, erros);
 }
