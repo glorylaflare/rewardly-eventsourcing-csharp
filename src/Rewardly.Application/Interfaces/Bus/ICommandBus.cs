@@ -11,9 +11,7 @@ public interface ICommandBus
     /// <param name="command">Comando a ser processado.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Tarefa assíncrona que representa a conclusão do processamento.</returns>
-    Task SendAsync(
-        ICommand command, 
-        CancellationToken cancellationToken);
+    Task SendAsync(ICommand command, CancellationToken cancellationToken);
 
     /// <summary>
     /// Envia um comando com retorno tipado para o manipulador apropriado.
@@ -22,7 +20,5 @@ public interface ICommandBus
     /// <param name="command">Comando a ser processado.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Resultado do processamento do comando.</returns>
-    Task<TResponse> SendAsync<TResponse>(
-        ICommand<TResponse> command,
-        CancellationToken cancellationToken);
+    Task<TResponse> SendAsync<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken);
 }
