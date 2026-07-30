@@ -11,7 +11,9 @@ public class CreateAccountHandler : ICommandHandler<CreateAccountCommand, bool>
 
     public async Task<bool> HandleAsync(CreateAccountCommand command, CancellationToken cancellationToken)
     {
-        await _service.CreateAsync(command, cancellationToken);
+        CreateAccountRequest? request = CreateAccountMapper.ToRequest(command);
+
+        await _service.CreateAsync(request, cancellationToken);
 
         return true;
     }

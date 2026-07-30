@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dispatchers\" />
-    <Folder Include="Pipelines\" />
-    <Folder Include="Queries\v1\" />
-    <Folder Include="Requests\" />
+    <Compile Remove="Dispatchers\**" />
+    <Compile Remove="Pipelines\**" />
+    <Compile Remove="Queries\**" />
+    <EmbeddedResource Remove="Dispatchers\**" />
+    <EmbeddedResource Remove="Pipelines\**" />
+    <EmbeddedResource Remove="Queries\**" />
+    <None Remove="Dispatchers\**" />
+    <None Remove="Pipelines\**" />
+    <None Remove="Queries\**" />
   </ItemGroup>
 
   <ItemGroup>

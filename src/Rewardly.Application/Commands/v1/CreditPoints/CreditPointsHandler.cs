@@ -11,7 +11,9 @@ public class CreditPointsHandler : ICommandHandler<CreditPointsCommand, bool>
 
     public async Task<bool> HandleAsync(CreditPointsCommand command, CancellationToken cancellationToken)
     {
-        await _service.CreditAsync(command, cancellationToken);
+        CreditPointsRequest? request = CreditPointsMapper.ToRequest(command);
+
+        await _service.CreditAsync(request, cancellationToken);
 
         return true;
     }

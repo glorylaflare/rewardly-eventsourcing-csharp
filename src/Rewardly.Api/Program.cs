@@ -4,7 +4,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDependencies();
+builder.Services.AddDependencies(builder.Configuration);
+
+builder.Services.AddHealthChecks();
 
 WebApplication? app = builder.Build();
 
@@ -16,4 +18,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.Run();
+app.MapHealthChecks("/health");
+await app.RunAsync();

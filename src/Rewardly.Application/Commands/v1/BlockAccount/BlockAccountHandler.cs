@@ -11,7 +11,9 @@ public class BlockAccountHandler : ICommandHandler<BlockAccountCommand, bool>
 
     public async Task<bool> HandleAsync(BlockAccountCommand command, CancellationToken cancellationToken)
     {
-        await _service.BlockAsync(command, cancellationToken);
+        BlockAccountRequest? request = BlockAccountMapper.ToRequest(command);
+
+        await _service.BlockAsync(request, cancellationToken);
 
         return true;
     }

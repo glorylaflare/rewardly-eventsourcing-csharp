@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/git/">
+    <File Path=".gitignore" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Rewardly.Api/Rewardly.Api.csproj" Id="891d4b86-7ef4-46de-a4b5-349564568f36" />
     <Project Path="src/Rewardly.Application/Rewardly.Application.csproj" Id="2fd05fb1-7587-4ce7-8e3d-d64bf21bfb8d" />

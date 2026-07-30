@@ -9,15 +9,15 @@ public interface IRepository<TAggregate> where TAggregate : IAggregateRoot
     /// <summary>
     /// Localiza um agregado pelo identificador informado.
     /// </summary>
-    /// <param name="id">Identificador único do agregado.</param>
+    /// <param name="aggregateId">Identificador único do agregado.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Instância do agregado correspondente ao identificador fornecido.</returns>
-    Task<TAggregate> FindOneAsync(Guid id, CancellationToken cancellationToken);
+    Task<TAggregate> FindOneAsync(Guid aggregateId, CancellationToken cancellationToken);
     /// <summary>
     /// Persiste o estado atual do agregado e seus eventos pendentes.
     /// </summary>
-    /// <param name="account">Agregado a ser persistido.</param>
+    /// <param name="aggregate">Agregado a ser persistido.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Tarefa assíncrona que representa a conclusão da persistência.</returns>
-    Task SaveAsync(TAggregate account, CancellationToken cancellationToken);
+    Task SaveAsync(TAggregate aggregate, CancellationToken cancellationToken);
 }
