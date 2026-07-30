@@ -12,37 +12,37 @@ public sealed class RewardlyAccountRepository : IRepository<RewardlyAccount>
         _eventStore = eventStore;
     }
 
-    public async Task<RewardlyAccount> FindOneAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<RewardlyAccount> FindOneAsync(Guid aggregateId, CancellationToken cancellationToken)
     {
         IReadOnlyCollection<IEvent>? events = await _eventStore.LoadAsync(
-            aggregateId: id, 
+            aggregateId: aggregateId, 
             cancellationToken);
 
         if (!events.Any())
         {
-            throw new AggregateException($"RewardlyAccount '{id}' not found.");
+            throw new AggregateException($"RewardlyAccount '{aggregateId}' not found.");
         }
 
         return RewardlyAccount.FromHistory(events);
     }
 
-    public async Task SaveAsync(RewardlyAccount account, CancellationToken cancellationToken)
+    public async Task SaveAsync(RewardlyAccount aggregate, CancellationToken cancellationToken)
     {
-        IReadOnlyCollection<IEvent>? uncommittedEvents = account.GetUncommittedEvents();
+        IReadOnlyCollection<IEvent>? uncommittedEvents = aggregate.GetUncommittedEvents();
 
         if (uncommittedEvents.Count == 0)
         {
             return;
         }
 
-        int expectedVersion = account.Version - uncommittedEvents.Count;
+        int expectedVersion = aggregate.Version - uncommittedEvents.Count;
 
         await _eventStore.SaveAsync(
-            aggregateId: account.Id, 
+            aggregateId: aggregate.Id, 
             expectedVersion, 
             uncommittedEvents, 
             cancellationToken);
 
-        account.ClearUncommittedEvents();
+        aggregate.ClearUncommittedEvents();
     }
 }

@@ -11,7 +11,9 @@ public class RedeemRewardHandler : ICommandHandler<RedeemRewardCommand, bool>
 
     public async Task<bool> HandleAsync(RedeemRewardCommand command, CancellationToken cancellationToken)
     {
-        await _service.RedeemAsync(command, cancellationToken);
+        RedeemRewardRequest? request = RedeemRewardMapper.ToRequest(command);
+
+        await _service.RedeemAsync(request, cancellationToken);
 
         return true;
     }

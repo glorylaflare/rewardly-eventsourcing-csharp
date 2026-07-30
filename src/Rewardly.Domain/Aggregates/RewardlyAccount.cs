@@ -15,10 +15,10 @@ public sealed class RewardlyAccount : AggregateRoot
 
     private RewardlyAccount() { }
 
-    public static RewardlyAccount Create(Guid accountId, Guid userId)
+    public static RewardlyAccount Create(Guid aggregateId, Guid userId)
     {
         RewardlyAccount? account = new RewardlyAccount();
-        account.RaiseEvent(new AccountCreated(accountId, userId));
+        account.RaiseEvent(new AccountCreated(aggregateId, userId));
         return account;
     }
 
@@ -89,6 +89,7 @@ public sealed class RewardlyAccount : AggregateRoot
         RaiseEvent(new AccountCancelled(Id, reason));
     }
 
+    #region APPLY METHODS USING BY REFLECTION ON APPLYEVENT() METHOD
     private void Apply(AccountCreated @event)
     {
         Id = @event.AggregateId;
@@ -126,6 +127,7 @@ public sealed class RewardlyAccount : AggregateRoot
     {
         Status = AccountStatus.Cancelled;
     }
+    #endregion
 
     private void EnsureActive()
     {

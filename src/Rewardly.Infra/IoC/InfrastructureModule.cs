@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using Rewardly.Domain.Aggregates;
 using Rewardly.Domain.Interfaces.v1;
 using Rewardly.Infra.Persistence.Repositories;

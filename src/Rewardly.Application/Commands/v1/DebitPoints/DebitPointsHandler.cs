@@ -11,7 +11,9 @@ public class DebitPointsHandler : ICommandHandler<DebitPointsCommand, bool>
 
     public async Task<bool> HandleAsync(DebitPointsCommand command, CancellationToken cancellationToken)
     {
-        await _service.DebitAsync(command, cancellationToken);
+        DebitPointsRequest? request = DebitPointsMapper.ToRequest(command);
+
+        await _service.DebitAsync(request, cancellationToken);
 
         return true;
     }

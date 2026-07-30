@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Rewardly.Application.Bus;
-using Rewardly.Application.Interfaces.Bus;
+using Rewardly.Application.Services.v1;
 using Rewardly.Domain.Interfaces.v1;
 using Rewardly.Domain.Notifications.v1;
 
@@ -12,7 +12,8 @@ public static class ApplicationModule
     {
         services.AddScoped<INotification, NotificationContext>();
         services.AddScoped<ICommandBus, CommandBus>();
-        services.AddScoped<ICommandHandlerResolver, CommandHandlerResolver>();
+        services.AddSingleton<ICommandHandlerResolver, CommandHandlerResolver>();
+        services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
 
         return services;
     }

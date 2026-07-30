@@ -9,17 +9,16 @@ public class MongoEventStore : IEventStore
 {
     private readonly IMongoCollection<EventDocument> _collection;
 
-    public MongoEventStore(
-        IMongoCollection<EventDocument> collection)
+    public MongoEventStore(IMongoCollection<EventDocument> collection)
     {
         _collection = collection;
     }
 
-    public async Task SaveAsync(Guid aggregateId, int expectedVersion, IEnumerable<IEvent> events, CancellationToken cancellationToken)
+    public async Task SaveAsync(Guid aggregateId, int expectedVersion, IEnumerable<IEvent> uncommittedEvents, CancellationToken cancellationToken)
     {
-        List<EventDocument>? documents = events.Select(EventMapper.ToDocument).ToList();
+        List<EventDocument>? eventDocuments = uncommittedEvents.Select(EventMapper.ToDocument).ToList();
 
-        if (documents.Count == 0)
+        if (eventDocuments.Count == 0)
         {
             return;
         }
@@ -30,7 +29,7 @@ public class MongoEventStore : IEventStore
             cancellationToken);
 
         await _collection.InsertManyAsync(
-            documents, 
+            eventDocuments, 
             cancellationToken: cancellationToken);
     }
 

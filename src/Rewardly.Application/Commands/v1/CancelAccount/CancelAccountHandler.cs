@@ -11,7 +11,9 @@ public class CancelAccountHandler : ICommandHandler<CancelAccountCommand, bool>
 
     public async Task<bool> HandleAsync(CancelAccountCommand command, CancellationToken cancellationToken)
     {
-        await _service.CancelAsync(command, cancellationToken);
+        CancelAccountRequest? request = CancelAccountMapper.ToRequest(command);
+
+        await _service.CancelAsync(request, cancellationToken);
 
         return true;
     }
