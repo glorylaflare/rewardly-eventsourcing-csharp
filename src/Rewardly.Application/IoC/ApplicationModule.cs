@@ -10,6 +10,7 @@ public static class ApplicationModule
         services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
         services.AddScoped<IPipelineExecutor, PipelineExecutor>();
         services.AddScoped<ICommandInvokerFactory, CommandInvokerFactory>();
+        services.AddScoped<IPipelineBehaviorFactory, PipelineBehaviorFactory>();
 
         services.AddScoped(typeof(ICommandInvoker), typeof(CommandInvoker<,>));
 

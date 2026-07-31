@@ -1,6 +1,4 @@
-﻿using Rewardly.Application.Interfaces.Pipeline;
-
-namespace Rewardly.Application.Pipeline;
+﻿namespace Rewardly.Application.Pipeline;
 
 public class PipelineBehaviorFactory : IPipelineBehaviorFactory
 {
@@ -18,7 +16,7 @@ public class PipelineBehaviorFactory : IPipelineBehaviorFactory
         {
             Type? responseType = commandType.GetInterfaces().Single(_ => _.IsGenericType && _.GetGenericTypeDefinition() == typeof(ICommand<>)).GetGenericArguments()[0];
 
-            return typeof(CommandInvoker<,>).MakeGenericType(commandType, responseType);
+            return typeof(IPipelineBehavior<,>).MakeGenericType(commandType, responseType);
         });
 
         return _serviceProvider.GetServices(behaviorType)

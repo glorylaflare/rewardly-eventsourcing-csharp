@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Bus;
+﻿namespace Rewardly.Application.Interfaces.Bus;
 
 /// <summary>
 /// Define a fábrica responsável por resolver o invocador adequado para cada comando.

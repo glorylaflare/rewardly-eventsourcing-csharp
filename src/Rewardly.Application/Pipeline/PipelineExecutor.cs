@@ -1,6 +1,4 @@
-﻿using Rewardly.Application.Interfaces.Pipeline;
-
-namespace Rewardly.Application.Pipeline;
+﻿namespace Rewardly.Application.Pipeline;
 
 public sealed class PipelineExecutor : IPipelineExecutor
 {
@@ -15,14 +13,14 @@ public sealed class PipelineExecutor : IPipelineExecutor
 
     public async Task<TResponse> ExecuteAsync<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken)
     {
-        ICommandInvoker? invoker = _commandInvokerFactory.Create(command);
+        ICommandInvoker invoker = _commandInvokerFactory.Create(command);
 
         List<object> behaviors = _behaviorFactory.Create(command).Reverse().ToList();
 
         RequestHandlerDelegate<TResponse> next = async () =>
         {
-            object? resut = await invoker.InvokeAsync(command, cancellationToken);
-            return (TResponse)resut!;
+            object? result = await invoker.InvokeAsync(command, cancellationToken);
+            return (TResponse)result!;
         };
 
         foreach (dynamic behavior in behaviors)

@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Interfaces.Bus;
+﻿namespace Rewardly.Application.Bus;
 
 public sealed class CommandInvokerFactory : ICommandInvokerFactory
 {

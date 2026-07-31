@@ -22,54 +22,54 @@ public class RewardlyController : ApiControllerBase
     [HttpPost("account")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCreateAccount([FromBody] CreateAccountCommand command)
+    public async Task<IActionResult> PostCreateAccount([FromBody] CreateAccountCommand command, CancellationToken cancellationToken)
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 
     [HttpPost("block")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostBlockAccount([FromBody] BlockAccountCommand command)
+    public async Task<IActionResult> PostBlockAccount([FromBody] BlockAccountCommand command, CancellationToken cancellationToken)
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 
     [HttpPost("cancel")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCancelAccount([FromBody] CancelAccountCommand command)
+    public async Task<IActionResult> PostCancelAccount([FromBody] CancelAccountCommand command, CancellationToken cancellationToken)
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 
     [HttpPost("credit")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCreditPoints([FromBody] CreditPointsCommand command)
+    public async Task<IActionResult> PostCreditPoints([FromBody] CreditPointsCommand command, CancellationToken cancellationToken)
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 
     [HttpPost("debit")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCDebitPoints([FromBody] DebitPointsCommand command)    
+    public async Task<IActionResult> PostCDebitPoints([FromBody] DebitPointsCommand command, CancellationToken cancellationToken)    
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 
     [HttpPost("redeem")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostRedeemReward([FromBody] RedeemRewardCommand command)
+    public async Task<IActionResult> PostRedeemReward([FromBody] RedeemRewardCommand command, CancellationToken cancellationToken)
     {
-        bool result = await _commandBus.SendAsync(command, new CancellationToken());
+        bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
     }
 }
