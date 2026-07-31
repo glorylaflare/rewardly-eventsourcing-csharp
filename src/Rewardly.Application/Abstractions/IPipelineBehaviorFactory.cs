@@ -1,14 +1,14 @@
-﻿namespace Rewardly.Application.Interfaces.Bus;
+﻿namespace Rewardly.Application.Abstractions;
 
 /// <summary>
 /// 
 /// </summary>
-public interface ICommandInvokerFactory
+public interface IPipelineBehaviorFactory
 {
     /// <summary>
     /// 
     /// </summary>
     /// <param name="command"></param>
     /// <returns></returns>
-    ICommandInvoker Create(ICommandBase command);
+    IReadOnlyCollection<object> Create(ICommandBase command);
 }

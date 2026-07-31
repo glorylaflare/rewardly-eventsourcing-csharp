@@ -1,28 +1,33 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Rewardly.Application.Abstractions;
+using Rewardly.Application.Bus;
+using Rewardly.Application.Interfaces.Pipeline;
 using System.Collections.Concurrent;
 
-namespace Rewardly.Application.Bus;
+namespace Rewardly.Application.Pipeline;
 
-public sealed class CommandInvokerFactory : ICommandInvokerFactory
+public class PipelineBehaviorFactory : IPipelineBehaviorFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private static readonly ConcurrentDictionary<Type, Type> _cache = new();
 
-    public CommandInvokerFactory(IServiceProvider serviceProvider)
+    public PipelineBehaviorFactory(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
 
-    public ICommandInvoker Create(ICommandBase command)
+    public IReadOnlyCollection<object> Create(ICommandBase command)
     {
-        Type invokerType = _cache.GetOrAdd(command.GetType(), static commandType =>
+        Type behaviorType = _cache.GetOrAdd(command.GetType(), static commandType =>
         {
             Type? responseType = commandType.GetInterfaces().Single(_ => _.IsGenericType && _.GetGenericTypeDefinition() == typeof(ICommand<>)).GetGenericArguments()[0];
 
             return typeof(CommandInvoker<,>).MakeGenericType(commandType, responseType);
         });
 
-        return (ICommandInvoker)_serviceProvider.GetRequiredService(invokerType);
+        return _serviceProvider.GetServices(behaviorType)
+            .Cast<object>()
+            .ToList()
+            .AsReadOnly();
     }
 }

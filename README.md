@@ -1,160 +1,136 @@
-# ✈️ Rewardly — API de Pontos de Fidelidade
+# Personal.EventSourcing.Rewardly - API de Pontos com Event Sourcing
 
-O Rewardly é um projeto backend voltado para estudo que simula um programa de fidelidade de uma companhia aérea.
+Rewardly é um projeto backend de estudo que simula um programa de fidelidade de companhia aérea.
 
-O sistema gerencia contas de recompensa de usuários, permitindo acumular, resgatar e controlar pontos através de uma arquitetura orientada a eventos.
+O objetivo principal é exercitar decisões arquiteturais em um contexto de negócio simples: gerir contas de recompensa, acumulação e consumo de pontos, com trilha completa de eventos.
 
-O foco principal do projeto é aplicar conceitos avançados de arquitetura como **CQRS**, **Event Sourcing** e **Domain-Driven Design (DDD)** de forma prática e bem estruturada.
+## Intenção de Negócio
 
----
+No contexto de programas de fidelidade, a confiança no saldo e no histórico de movimentações é essencial.
 
-## 🚀 Objetivo
+Este projeto modela esse problema com foco em:
 
-O objetivo deste projeto não é a complexidade do negócio, mas sim a **qualidade da arquitetura**.
+- rastreabilidade das mudanças de estado;
+- consistência das regras de negócio no agregado;
+- separação entre processamento de comandos (write side) e consultas (read side).
 
-Ele foi idealizado para demonstrar:
+## Estado Atual do Projeto
 
-* Separação clara entre escrita e leitura (CQRS)
-* Rastreamento completo de mudanças via Event Sourcing
-* Modelagem de domínio com DDD
-* Boas práticas de observabilidade e logging
-* Processamento idempotente de comandos
+Status de referência: 2026-07-31.
 
----
+| Item | Estado Atual |
+| --- | --- |
+| Build da solução | Concluído com sucesso (`dotnet build`) |
+| Execução da API | Não inicializa no momento por erro de DI no bootstrap |
+| Testes automatizados | Projetos de teste criados, sem casos implementados |
+| Write Side (comandos e domínio) | Parcialmente implementado |
+| Read Side (projeções e consultas) | Não implementado |
+| Observabilidade (métricas/tracing) | Planejado |
+| CI/CD | Planejado |
 
-## 🧠 Conceitos e Padrões
+Este é um projeto em desenvolvimento ativo e incremental. O objetivo atual é consolidar a base de Event Sourcing no write side antes da evolução do read side.
 
-O projeto utiliza os seguintes princípios:
+## Arquitetura
 
-* CQRS (Command Query Responsibility Segregation)
-* Event Sourcing
-* Event Store (MongoDB)
-* Read Model (SQL Server)
-* Domain-Driven Design (DDD)
-* Princípios SOLID
-* Programação Orientada a Objetos (POO)
-* Repository Pattern
-* Factory Pattern (quando aplicável)
-* Specification Pattern
-* Strategy Pattern
-* Notification Pattern
-* Pipeline Behaviors (implementação própria, sem MediatR)
-* Idempotência
-* Observabilidade com Grafana
+### Write Side (implementado em progresso)
 
----
+- API HTTP para recebimento de comandos.
+- Camada de aplicação com Command Bus e pipeline próprios.
+- Agregado de domínio `RewardlyAccount` com regras de negócio.
+- Persistência orientada a eventos em MongoDB (Event Store).
 
-## 🏗️ Visão de Arquitetura
+### Read Side (planejado)
 
-O sistema é dividido em dois lados principais:
+- Projeções para modelo de leitura.
+- Persistência otimizada para consulta (SQL Server).
+- Endpoints de consulta e histórico materializado.
 
-### Write Side (Comandos)
+## Domínio Atual
 
-* Recebe comandos
-* Aplica regras de negócio
-* Gera eventos de domínio
-* Persiste eventos no MongoDB
+Aggregate root principal: `RewardlyAccount`
 
-### Read Side (Consultas)
+Entidades/objetos de valor relevantes:
 
-* Otimizado para leitura
-* Baseado em projeções
-* Armazenado no SQL Server
+- saldo (`Balance`);
+- status da conta (`Active`, `Blocked`, `Cancelled`).
 
----
+Regras de negócio já modeladas:
 
-## 📦 Domínio
+- somente contas ativas podem sofrer crédito, débito, resgate e expiração;
+- pontos devem ser maiores que zero;
+- débito/resgate exigem saldo suficiente;
+- cancelamento não é permitido com saldo positivo;
+- bloqueio/cancelamento repetidos não geram novo evento.
 
-O principal Aggregate do sistema é:
+## Eventos de Domínio Modelados
 
-```text
-RewardAccount
+- `AccountCreated`
+- `AccountBlocked`
+- `AccountCancelled`
+- `PointsCredited`
+- `PointsDebited`
+- `PointsExpired`
+- `RewardRedeemed`
+
+## API de Comandos (v1)
+
+Base route: `/api/v1/rewardly`
+
+| Endpoint | Objetivo | Payload |
+| --- | --- | --- |
+| `POST /account` | Criar conta de recompensa | `{ "userId": "guid" }` |
+| `POST /block` | Bloquear conta | `{ "aggregateId": "guid", "reason": "string" }` |
+| `POST /cancel` | Cancelar conta | `{ "aggregateId": "guid", "reason": "string" }` |
+| `POST /credit` | Creditar pontos | `{ "aggregateId": "guid", "points": 100, "reason": "string" }` |
+| `POST /debit` | Debitar pontos | `{ "aggregateId": "guid", "points": 100, "reason": "string" }` |
+| `POST /redeem` | Resgatar recompensa | `{ "aggregateId": "guid", "rewardId": "guid", "points": 100 }` |
+
+Resposta padrão: envelope `ResponseBase<T>`.
+
+## Stack Tecnológica
+
+- .NET 8
+- ASP.NET Core Web API
+- MongoDB (Event Store)
+- xUnit (estrutura de testes)
+- Dockerfile para conteinerização da API
+
+## Como Executar Localmente
+
+### Pre-requisitos
+
+- .NET SDK 8
+- MongoDB disponível localmente ou remoto
+
+### Configuração
+
+1. Ajuste a `ConnectionString` em `src/Rewardly.Api/appsettings.Development.json`.
+2. Opcionalmente ajuste `DatabaseName` conforme o ambiente.
+
+### Comandos
+
+```bash
+dotnet build .\Personal.EventSourcing.Rewardly.slnx
+dotnet run --project .\src\Rewardly.Api\Rewardly.Api.csproj
 ```
 
-Cada conta é identificada por um **UserId** (proveniente de outro sistema) e possui:
+Observação importante: no estado atual, a API falha na inicialização por configuração de DI pendente no módulo de aplicação.
 
-* Saldo de pontos
-* Status da conta (Active, Blocked, Cancelled)
-* Histórico de transações baseado em eventos
+## Principais Gaps para Proximas Sprints
 
----
+- corrigir composição de DI do pipeline/command invoker;
+- registrar handlers de comando automaticamente (ou explicitamente);
+- finalizar configuração de acesso ao MongoDB (client/database/collection);
+- implementar read side e projeções em SQL Server;
+- criar cobertura de testes unitários e de integração;
+- incluir idempotência de comandos e observabilidade operacional.
 
-## 📌 Eventos de Domínio
+## Observações
 
-Todas as mudanças de estado são representadas por eventos:
+- o sistema não armazena dados pessoais sensíveis (nome, CPF etc.);
+- o identificador de usuário é tratado como `UserId` externo;
+- o foco do repositório é arquitetura backend e evolução técnica.
 
-* RewardAccountCreated
-* PointsCredited
-* PointsDebited
-* PointsExpired
-* RewardAccountCancelled
-* RewardAccountBlocked
-* RewardRedeemed
+## Licença
 
----
-
-## ⚙️ Funcionalidades (Planejadas)
-
-* Criar conta de fidelidade
-* Creditar pontos
-* Resgatar recompensas (uso de pontos)
-* Expiração de pontos (após 90 dias)
-* Cancelamento de conta
-* Bloqueio de conta
-* Histórico completo de transações
-* Processamento idempotente
-
----
-
-## 🛠️ Tecnologias
-
-* .NET (C#)
-* MongoDB (Event Store)
-* SQL Server (Read Model)
-* Docker (planejado)
-* Grafana + Prometheus (planejado)
-* GitHub Actions (CI/CD planejado)
-
----
-
-## 🔍 Observabilidade (Planejado)
-
-O sistema irá expor métricas como:
-
-* Total de pontos creditados/debitados
-* Quantidade de transações
-* Latência de processamento de eventos
-* Atraso nas projeções (projection lag)
-
----
-
-## 🧪 Status do Projeto
-
-🚧 **Em desenvolvimento**
-
-Este projeto está sendo desenvolvido de forma incremental, seguindo sprints.
-
----
-
-## 📌 Observações
-
-* O sistema **não armazena dados pessoais** (nome, CPF, etc.)
-* Usuários são identificados apenas por um **UserId**
-* O foco é arquitetura backend (sem interface gráfica)
-
----
-
-## 🎯 Motivação
-
-Este projeto faz parte de um esforço pessoal para aprofundar conhecimentos em:
-
-* Arquitetura de software
-* Sistemas distribuídos
-* Event-driven design
-* Boas práticas de backend
-
----
-
-## 📄 Licença
-
-Projeto desenvolvido para fins educacionais.
+Projeto para fins educacionais.
