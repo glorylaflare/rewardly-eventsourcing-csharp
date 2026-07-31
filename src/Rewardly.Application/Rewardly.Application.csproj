@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Rewardly.Domain\Rewardly.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
+
 </Project>

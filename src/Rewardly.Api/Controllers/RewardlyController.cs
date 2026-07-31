@@ -24,7 +24,7 @@ public class RewardlyController : ApiControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostCreateAccount([FromBody] CreateAccountCommand command)
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 
@@ -33,7 +33,7 @@ public class RewardlyController : ApiControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostBlockAccount([FromBody] BlockAccountCommand command)
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 
@@ -42,7 +42,7 @@ public class RewardlyController : ApiControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostCancelAccount([FromBody] CancelAccountCommand command)
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 
@@ -51,16 +51,16 @@ public class RewardlyController : ApiControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostCreditPoints([FromBody] CreditPointsCommand command)
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 
     [HttpPost("debit")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCDebitPoints([FromBody] DebitPointsCommand command)
+    public async Task<IActionResult> PostCDebitPoints([FromBody] DebitPointsCommand command)    
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 
@@ -69,7 +69,7 @@ public class RewardlyController : ApiControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostRedeemReward([FromBody] RedeemRewardCommand command)
     {
-        bool result = await _commandBus.SendAsync(command);
+        bool result = await _commandBus.SendAsync(command, new CancellationToken());
         return Result(result);
     }
 }

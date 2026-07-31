@@ -1,18 +1,18 @@
-﻿namespace Rewardly.Application.Bus;
+﻿using Rewardly.Application.Interfaces.Pipeline;
+
+namespace Rewardly.Application.Bus;
 
 public class CommandBus : ICommandBus
 {
-    private readonly ICommandHandlerResolver _resolver;
+    private readonly IPipelineExecutor _pipeline;
 
-    public CommandBus(ICommandHandlerResolver resolver)
+    public CommandBus(IPipelineExecutor pipeline)
     {
-        _resolver = resolver;
+        _pipeline = pipeline;
     }
 
     public async Task<TResponse> SendAsync<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken)
     {
-        CommandExecutionContext? context = _resolver.Resolve(command);
-
-        return await ((dynamic)context.Handler).HandleAsync((dynamic)command, cancellationToken);
+        return await _pipeline.ExecuteAsync(command, cancellationToken);
     }
 }

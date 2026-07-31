@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Interfaces.Behaviors;
+﻿namespace Rewardly.Application.Interfaces.Pipeline;
 
 /// <summary>
 /// Define um comportamento de pipeline executado em torno do manipulador de comandos.
@@ -10,8 +10,9 @@ public interface IPipelineBehavior<TRequest, TResponse> where TRequest : IComman
     /// <summary>
     /// Executa a lógica do comportamento e encadeia a próxima etapa do pipeline.
     /// </summary>
-    /// <param name="context">Contexto com os dados da requisição em processamento.</param>
+    /// <param name="request"></param>
     /// <param name="next">Delegado que representa a próxima etapa do pipeline.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>Resposta resultante da execução da cadeia de pipeline.</returns>
-    Task<TResponse> Handle(PipelineContext<TRequest> context, RequestHandlerDelegate<TResponse> next);
+    Task<TResponse> HandleAsync(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken);
 }
