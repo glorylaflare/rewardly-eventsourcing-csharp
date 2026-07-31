@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Behaviors\" />
+    <Folder Include="Pipeline\Behaviors\" />
   </ItemGroup>
 
 </Project>

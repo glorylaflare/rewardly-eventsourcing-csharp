@@ -1,5 +1,4 @@
-﻿using Rewardly.Application.Abstractions;
-using Rewardly.Application.Interfaces.Pipeline;
+﻿using Rewardly.Application.Interfaces.Pipeline;
 
 namespace Rewardly.Application.Pipeline;
 

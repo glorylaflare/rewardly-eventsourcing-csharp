@@ -17,9 +17,9 @@ public interface IPipelineBehavior<TRequest, TResponse> where TRequest : IComman
     /// <summary>
     /// Executa a lógica do comportamento e encadeia a próxima etapa do pipeline.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="request">Comando recebido para processamento na etapa atual do pipeline.</param>
     /// <param name="next">Delegado que representa a próxima etapa do pipeline.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Resposta resultante da execução da cadeia de pipeline.</returns>
     Task<TResponse> HandleAsync(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken);
 }

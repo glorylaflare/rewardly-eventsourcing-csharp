@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rewardly.Application.Abstractions;
-using System.Collections.Concurrent;
-
-namespace Rewardly.Application.Bus;
+﻿namespace Rewardly.Application.Interfaces.Bus;
 
 public sealed class CommandInvokerFactory : ICommandInvokerFactory
 {

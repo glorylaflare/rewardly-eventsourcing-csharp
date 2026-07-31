@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rewardly.Application.Abstractions;
-using Rewardly.Application.Bus;
-using Rewardly.Application.Interfaces.Pipeline;
-using System.Collections.Concurrent;
+﻿using Rewardly.Application.Interfaces.Pipeline;
 
 namespace Rewardly.Application.Pipeline;
 

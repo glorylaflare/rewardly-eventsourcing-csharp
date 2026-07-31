@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Rewardly.Application.Abstractions;
-using Rewardly.Application.Bus;
 using Rewardly.Application.Interfaces.Pipeline;
 using Rewardly.Application.Services.v1;
 using Rewardly.Domain.Interfaces.v1;

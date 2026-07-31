@@ -3,3 +3,6 @@ global using Rewardly.Application.Interfaces.Services.v1;
 global using Rewardly.Application.Mappers;
 global using Rewardly.Application.Requests;
 global using Rewardly.Application.Pipeline;
+global using Microsoft.Extensions.DependencyInjection;
+global using Rewardly.Application.Bus;
+global using System.Collections.Concurrent;
