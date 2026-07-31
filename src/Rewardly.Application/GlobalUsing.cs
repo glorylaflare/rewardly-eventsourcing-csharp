@@ -6,3 +6,4 @@ global using Rewardly.Application.Pipeline;
 global using Microsoft.Extensions.DependencyInjection;
 global using Rewardly.Application.Bus;
 global using System.Collections.Concurrent;
+global using Rewardly.Application.Interfaces.Pipeline;

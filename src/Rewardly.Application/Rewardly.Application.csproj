@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Rewardly.Domain\Rewardly.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pipeline\Behaviors\" />
-  </ItemGroup>
-
 </Project>
