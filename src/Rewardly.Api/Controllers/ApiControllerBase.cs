@@ -6,9 +6,9 @@ namespace Rewardly.Api.Controllers;
 public abstract class ApiControllerBase : ControllerBase
 {
     private readonly INotification _notification;
-    private readonly ILogger<ApiControllerBase> _logger;
+    private readonly ILogger _logger;
 
-    protected ApiControllerBase(INotification notification, ILogger<ApiControllerBase> logger)
+    protected ApiControllerBase(INotification notification, ILogger logger)
     {
         _notification = notification;
         _logger = logger;

@@ -12,7 +12,7 @@ public static class ApplicationModule
         services.AddScoped<ICommandInvokerFactory, CommandInvokerFactory>();
         services.AddScoped<IPipelineBehaviorFactory, PipelineBehaviorFactory>();
 
-        services.AddScoped(typeof(ICommandInvoker), typeof(CommandInvoker<,>));
+        services.AddScoped(typeof(CommandInvoker<,>));
 
         return services;
     }

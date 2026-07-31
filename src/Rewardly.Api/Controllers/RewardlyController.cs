@@ -14,7 +14,7 @@ public class RewardlyController : ApiControllerBase
 {
     private readonly ICommandBus _commandBus;
 
-    public RewardlyController(ICommandBus commandBus, INotification notification) : base(notification)
+    public RewardlyController(ICommandBus commandBus, INotification notification, ILogger logger) : base(notification, logger)
     {
         _commandBus = commandBus;
     }
@@ -58,7 +58,7 @@ public class RewardlyController : ApiControllerBase
     [HttpPost("debit")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostCDebitPoints([FromBody] DebitPointsCommand command, CancellationToken cancellationToken)    
+    public async Task<IActionResult> PostDebitPoints([FromBody] DebitPointsCommand command, CancellationToken cancellationToken)    
     {
         bool result = await _commandBus.SendAsync(command, cancellationToken);
         return Result(result);
