@@ -1,10 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Rewardly.Application.Bus;
-using Rewardly.Application.Services.v1;
-using Rewardly.Domain.Interfaces.v1;
-using Rewardly.Domain.Notifications.v1;
-
-namespace Rewardly.Application.IoC;
+﻿namespace Rewardly.Application.IoC;
 
 public static class ApplicationModule
 {
@@ -12,8 +6,22 @@ public static class ApplicationModule
     {
         services.AddScoped<INotification, NotificationContext>();
         services.AddScoped<ICommandBus, CommandBus>();
-        services.AddSingleton<ICommandHandlerResolver, CommandHandlerResolver>();
+        services.AddPipeline();
         services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
+        services.AddScoped<IPipelineExecutor, PipelineExecutor>();
+        services.AddScoped<ICommandInvokerFactory, CommandInvokerFactory>();
+        services.AddScoped<IPipelineBehaviorFactory, PipelineBehaviorFactory>();
+
+        services.AddScoped(typeof(CommandInvoker<,>));
+
+        return services;
+    }
+
+    public static IServiceCollection AddPipeline(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;
     }

@@ -7,11 +7,6 @@
 public interface ICommand<out TResponse> : ICommandBase { }
 
 /// <summary>
-/// Define um comando que não produz valor de retorno explícito.
-/// </summary>
-public interface ICommand : ICommandBase { }
-
-/// <summary>
 /// Reúne metadados comuns aplicáveis a todos os comandos da aplicação.
 /// </summary>
 public interface ICommandBase { }
