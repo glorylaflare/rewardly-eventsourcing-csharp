@@ -21,7 +21,6 @@ public class PipelineBehaviorFactory : IPipelineBehaviorFactory
 
         return _serviceProvider.GetServices(behaviorType)
             .Cast<object>()
-            .ToList()
-            .AsReadOnly();
+            .ToArray();
     }
 }

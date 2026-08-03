@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Rewardly.Domain.Aggregates;
 using Rewardly.Domain.Exceptions;
-using Rewardly.Domain.Interfaces.v1;
 
 namespace Rewardly.Application.Services.v1;
 
@@ -20,134 +19,69 @@ public class RewardlyAccountService : IRewardlyAccountService
 
     public async Task BlockAsync(BlockAccountRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de bloqueio de uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
+        _logger.LogDebug("Processo de bloqueio de uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
 
-            RewardlyAccount? aggregate = await _repository.FindOneAsync(request.AggregateId, cancellationToken);
-            if (aggregate is null)
-                throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {request.AggregateId}");
+        await LoadAndSaveAggregateAsync(request.AggregateId, aggregate => aggregate.Block(request.Reason), cancellationToken);
 
-            aggregate.Block(request.Reason);
-
-            await _repository.SaveAsync(aggregate, cancellationToken);
-
-            _logger.LogInformation("Processo de bloqueio de uma conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        _logger.LogInformation("Processo de bloqueio de uma conta foi concluído com sucesso. AggregateId: {AggregateId}", request.AggregateId);
     }
 
     public async Task CancelAsync(CancelAccountRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de cancelamento de uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
+        _logger.LogDebug("Processo de cancelamento de uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
 
-            RewardlyAccount? aggregate = await _repository.FindOneAsync(request.AggregateId, cancellationToken);
-            if (aggregate is null)
-                throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {request.AggregateId}");
+        await LoadAndSaveAggregateAsync(request.AggregateId, aggregate => aggregate.Cancel(request.Reason), cancellationToken);
 
-            aggregate.Cancel(request.Reason);
-
-            await _repository.SaveAsync(aggregate, cancellationToken);
-
-            _logger.LogInformation("Processo de cancelamento de uma conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex,"Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        _logger.LogInformation("Processo de cancelamento de uma conta foi concluído com sucesso. AggregateId: {AggregateId}", request.AggregateId);
     }
 
     public async Task CreateAsync(CreateAccountRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de criação da conta foi iniciado.");
+        _logger.LogDebug("Processo de criação da conta foi iniciado.");
 
-            RewardlyAccount? aggregate = RewardlyAccount.Create(Guid.NewGuid(), request.UserId);
-            await _repository.SaveAsync(aggregate, cancellationToken);
+        RewardlyAccount? aggregate = RewardlyAccount.Create(Guid.NewGuid(), request.UserId);
 
-            _logger.LogInformation("Processo de criação de conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        await _repository.SaveAsync(aggregate, cancellationToken);
+
+        _logger.LogInformation("Processo de criação de conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
     }
 
     public async Task CreditAsync(CreditPointsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de adição de pontos a uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
+        _logger.LogDebug("Processo de adição de pontos a uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
 
-            RewardlyAccount? aggregate = await _repository.FindOneAsync(request.AggregateId, cancellationToken);
-            if (aggregate is null)
-                throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {request.AggregateId}");
+        await LoadAndSaveAggregateAsync(request.AggregateId, aggregate => aggregate.CreditPoint(request.Points, request.Reason), cancellationToken);
 
-            aggregate.CreditPoint(request.Points, request.Reason);
-
-            await _repository.SaveAsync(aggregate, cancellationToken);
-
-            _logger.LogInformation("Processo de adição de pontos a uma conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        _logger.LogInformation("Processo de adição de pontos a uma conta foi concluído com sucesso. AggregateId: {AggregateId}", request.AggregateId);
     }
 
     public async Task DebitAsync(DebitPointsRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de debitação de pontos a uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
+        _logger.LogDebug("Processo de debitação de pontos a uma conta foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
 
-            RewardlyAccount? aggregate = await _repository.FindOneAsync(request.AggregateId, cancellationToken);
-            if (aggregate is null)
-                throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {request.AggregateId}");
+        await LoadAndSaveAggregateAsync(request.AggregateId, aggregate => aggregate.DebitPoints(request.Points, request.Reason), cancellationToken);
 
-            aggregate.DebitPoints(request.Points, request.Reason);
-
-            await _repository.SaveAsync(aggregate, cancellationToken);
-
-            _logger.LogInformation("Processo de debitação de pontos a uma conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        _logger.LogInformation("Processo de debitação de pontos a uma conta foi concluído com sucesso. AggregateId: {AggregateId}", request.AggregateId);
     }
 
     public async Task RedeemAsync(RedeemRewardRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            _logger.LogDebug("Processo de resgate de recompensa foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
+        _logger.LogDebug("Processo de resgate de recompensa foi iniciado. Aggregate: {Aggregate}", request.AggregateId);
 
-            RewardlyAccount? aggregate = await _repository.FindOneAsync(request.AggregateId, cancellationToken);
-            if (aggregate is null)
-                throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {request.AggregateId}");
+        await LoadAndSaveAggregateAsync(request.AggregateId, aggregate => aggregate.RewardRedeem(request.RewardId, request.Points), cancellationToken);
 
-            aggregate.RewardRedeem(request.RewardId, request.Points);
+        _logger.LogInformation("Processo de resgate de recompensa foi concluído com sucesso. AggregateId: {AggregateId}", request.AggregateId);
+    }
 
-            await _repository.SaveAsync(aggregate, cancellationToken);
+    private async Task LoadAndSaveAggregateAsync(Guid aggregateId, Action<RewardlyAccount> aggregateAction, CancellationToken cancellationToken)
+    {
+        RewardlyAccount? aggregate = await _repository.FindOneAsync(aggregateId, cancellationToken);
 
-            _logger.LogInformation("Processo de resgate de recompensa foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Um erro aconteceu durante o processo. Exception: {Message}", ex.Message);
-            throw;
-        }
+        if (aggregate is null)
+            throw new AggregateNotFoundException($"Nenhum aggregate foi encontrado com esse id {aggregateId}");
+
+        aggregateAction(aggregate);
+
+        await _repository.SaveAsync(aggregate, cancellationToken);
     }
 }

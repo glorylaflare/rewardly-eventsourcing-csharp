@@ -1,4 +1,4 @@
-# Personal.EventSourcing.Rewardly - API de Pontos com Event Sourcing
+# Personal.EventSourcing.Rewardly
 
 Rewardly é um projeto backend de estudo que simula um programa de fidelidade de companhia aérea.
 
