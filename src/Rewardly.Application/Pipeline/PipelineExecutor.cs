@@ -15,7 +15,7 @@ public sealed class PipelineExecutor : IPipelineExecutor
     {
         ICommandInvoker invoker = _commandInvokerFactory.Create(command);
 
-        List<object> behaviors = _behaviorFactory.Create(command).Reverse().ToList();
+        IEnumerable<object>? behaviors = _behaviorFactory.Create(command).Reverse();
 
         RequestHandlerDelegate<TResponse> next = async () =>
         {

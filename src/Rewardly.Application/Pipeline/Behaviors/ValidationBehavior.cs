@@ -23,10 +23,9 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         ValidationFailure[]? failures = (await Task.WhenAll(
             _validators.Select(_ => _.ValidateAsync(context, cancellationToken))))
             .SelectMany(result => result.Errors)
-            .Where(failure => failure is not null)
             .ToArray();
 
-        if (failures.Length != 0)
+        if (failures.Any())
             throw new ValidationException(failures);
 
         return await next();
