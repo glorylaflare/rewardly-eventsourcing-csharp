@@ -1,7 +1,9 @@
 ﻿namespace Rewardly.Domain.Exceptions;
 
-public class InvalidEventTypeException : Exception
+public class InvalidEventTypeException : RewardlyException
 {
-    public InvalidEventTypeException() { }
-    public InvalidEventTypeException(string? message) : base(message) { }
+    public InvalidEventTypeException(string message) : base(
+        message, 
+        "", 
+        RewardlyExceptionCategory.Infrastructure) { }
 }
