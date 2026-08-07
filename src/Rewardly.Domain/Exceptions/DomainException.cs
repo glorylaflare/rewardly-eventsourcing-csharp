@@ -2,8 +2,8 @@
 
 public class DomainException : RewardlyException
 {
-    public DomainException(string message) : base(
+    public DomainException(string message, string errorCode) : base(
         message, 
-        "", 
+        errorCode, 
         RewardlyExceptionCategory.Domain) { }
 }
