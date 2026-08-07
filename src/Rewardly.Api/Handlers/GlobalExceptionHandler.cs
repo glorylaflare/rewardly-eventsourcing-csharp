@@ -1,0 +1,30 @@
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Rewardly.Api.Mapper;
+
+namespace Rewardly.Api.Handlers;
+
+public sealed class GlobalExceptionHandler : IExceptionHandler
+{
+    private readonly IExceptionMapper _exceptionMapper;
+    private readonly ILogger<GlobalExceptionHandler> _logger;
+
+    public GlobalExceptionHandler(
+        IExceptionMapper exceptionMapper,
+        ILogger<GlobalExceptionHandler> logger)
+    {
+        _exceptionMapper = exceptionMapper;
+        _logger = logger;
+    }
+
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    {
+        ExceptionMapping mapping = _exceptionMapper.Map(exception);
+
+        _logger.LogError(
+            exception,
+            "Unhandled exception. ErrorCode: {ErrorCode}",
+            mapping.ErrorCode);
+
+        return true;
+    }
+}
