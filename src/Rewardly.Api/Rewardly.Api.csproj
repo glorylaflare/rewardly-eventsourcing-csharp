@@ -11,13 +11,9 @@
 
   <ItemGroup>
     <Compile Remove="Filters\**" />
-    <Compile Remove="Middlewares\**" />
     <Content Remove="Filters\**" />
-    <Content Remove="Middlewares\**" />
     <EmbeddedResource Remove="Filters\**" />
-    <EmbeddedResource Remove="Middlewares\**" />
     <None Remove="Filters\**" />
-    <None Remove="Middlewares\**" />
   </ItemGroup>
 
   <ItemGroup>

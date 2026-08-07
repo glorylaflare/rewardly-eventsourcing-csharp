@@ -9,7 +9,7 @@ public sealed class AccountBlocked : DomainEvent
         : base(aggregateId)
     {
         if (string.IsNullOrWhiteSpace(reason))
-            throw new DomainException("Block reason is required");
+            throw new DomainException("Block reason is required", ValidationErrorCodes.InvalidRequest);
 
         Reason = reason;
     }

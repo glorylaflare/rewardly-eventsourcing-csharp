@@ -4,6 +4,6 @@ public class InvalidEventTypeException : RewardlyException
 {
     public InvalidEventTypeException(string message) : base(
         message, 
-        "", 
+        ValidationErrorCodes.InvalidEvent, 
         RewardlyExceptionCategory.Infrastructure) { }
 }

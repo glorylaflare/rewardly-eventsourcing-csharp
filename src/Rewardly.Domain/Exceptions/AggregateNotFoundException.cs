@@ -5,15 +5,15 @@ public class AggregateNotFoundException : RewardlyException
     public AggregateNotFoundException() : base(
         "Aggregate not found.",
         AggregateErrorCodes.AggregateNotFound,
-        RewardlyExceptionCategory.Domain) { }
+        RewardlyExceptionCategory.Application) { }
 
     public AggregateNotFoundException(Guid aggregateId) : base(
         $"Aggregate '{aggregateId}' was not found.",
         AggregateErrorCodes.AggregateNotFound,
-        RewardlyExceptionCategory.Domain) { }
+        RewardlyExceptionCategory.Application) { }
 
     public AggregateNotFoundException(string message) : base(
         message,
         AggregateErrorCodes.AggregateNotFound,
-        RewardlyExceptionCategory.Domain) { }
+        RewardlyExceptionCategory.Application) { }
 }

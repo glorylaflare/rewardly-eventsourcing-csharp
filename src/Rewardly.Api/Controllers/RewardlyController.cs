@@ -21,38 +21,32 @@ public class RewardlyController : ApiControllerBase
     }
 
     [HttpPost("account")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostCreateAccount([FromBody] CreateAccountCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
     [HttpPost("block")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostBlockAccount([FromBody] BlockAccountCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
     [HttpPost("cancel")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostCancelAccount([FromBody] CancelAccountCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
     [HttpPost("credit")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostCreditPoints([FromBody] CreditPointsCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
     [HttpPost("debit")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostDebitPoints([FromBody] DebitPointsCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
     [HttpPost("redeem")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
     public Task<IActionResult> PostRedeemReward([FromBody] RedeemRewardCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 }

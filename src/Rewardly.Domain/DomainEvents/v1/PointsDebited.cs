@@ -10,7 +10,7 @@ public sealed class PointsDebited : DomainEvent
         : base(aggregateId)
     {
         if (string.IsNullOrWhiteSpace(reason))
-            throw new DomainException("Debit reason is required");
+            throw new DomainException("Debit reason is required", ValidationErrorCodes.InvalidRequest);
 
         Points = points;
         Reason = reason;

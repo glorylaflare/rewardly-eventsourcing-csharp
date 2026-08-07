@@ -84,7 +84,7 @@ public sealed class RewardlyAccount : AggregateRoot
             return;
 
         if (Balance.Value > 0)
-            throw new DomainException("You can't cancel an account with remaining points");
+            throw new DomainException("You can't cancel an account with remaining points", AccountErrorCodes.AccountHasRemainingPoints);
 
         RaiseEvent(new AccountCancelled(Id, reason));
     }
@@ -132,18 +132,18 @@ public sealed class RewardlyAccount : AggregateRoot
     private void EnsureActive()
     {
         if (!new AccountMustBeActive().IsSatisfiedBy(this))
-            throw new DomainException("Account is not active");
+            throw new DomainException("Account is not active", AccountErrorCodes.AccountInactive);
     }
 
     private void ValidatePoints(int points)
     {
         if (points <= 0)
-            throw new DomainException("Invalid points");
+            throw new DomainException("Invalid points", TransactionErrorCodes.InvalidPoints);
     }
 
     private void EnsureSufficientBalance(int points)
     {
         if (!new HasSufficientBalance(points).IsSatisfiedBy(this))
-            throw new DomainException("Insufficient balance");
+            throw new DomainException("Insufficient balance", TransactionErrorCodes.InsufficientPoints);
     }
 }
