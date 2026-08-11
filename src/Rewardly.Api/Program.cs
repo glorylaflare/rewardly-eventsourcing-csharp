@@ -16,8 +16,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseExceptionHandler();
+app.UseHttpsRedirection();
 app.MapControllers();
 app.MapHealthChecks("/health");
 await app.RunAsync();

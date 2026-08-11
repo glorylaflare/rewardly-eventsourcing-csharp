@@ -25,6 +25,20 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             "Unhandled exception. ErrorCode: {ErrorCode}",
             mapping.ErrorCode);
 
+        var problemDetails = new ProblemDetails
+        {
+            Status = (int)mapping.StatusCode,
+            Title = "An error occurred while processing the request.",
+            Detail = mapping.Message,
+            Instance = httpContext.Request.Path
+        };
+
+        problemDetails.Extensions["errorCode"] = mapping.ErrorCode;
+
+        httpContext.Response.StatusCode = (int)mapping.StatusCode;
+
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+
         return true;
     }
 }
