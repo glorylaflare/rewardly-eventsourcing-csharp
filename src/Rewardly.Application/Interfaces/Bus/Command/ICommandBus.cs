@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Interfaces.Bus;
+﻿namespace Rewardly.Application.Interfaces.Bus.Command;
 
 /// <summary>
 /// Define o barramento responsável por encaminhar comandos aos respectivos manipuladores.

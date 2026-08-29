@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Rewardly.Application.Interfaces.Bus.Command;
 using System.Diagnostics;
 
 namespace Rewardly.Application.Pipeline.Behaviors;

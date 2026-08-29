@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.IoC;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.IoC;
 
 public static class ApplicationModule
 {
@@ -9,10 +11,10 @@ public static class ApplicationModule
         services.AddPipeline();
         services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
         services.AddScoped<IPipelineExecutor, PipelineExecutor>();
-        services.AddScoped<ICommandInvokerFactory, CommandInvokerFactory>();
+        services.AddScoped<IRequestInvokerFactory, RequestInvokerFactory>();
         services.AddScoped<IPipelineBehaviorFactory, PipelineBehaviorFactory>();
 
-        services.AddScoped(typeof(CommandInvoker<,>));
+        services.AddScoped(typeof(RequestInvoker<,>));
 
         return services;
     }
