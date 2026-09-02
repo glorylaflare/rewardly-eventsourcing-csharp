@@ -3,7 +3,7 @@ using Rewardly.Domain.Exceptions;
 using Rewardly.Domain.Interfaces.v1;
 using Rewardly.Infra.Mapper;
 
-namespace Rewardly.Infra.Persistence.Repositories;
+namespace Rewardly.Infra.Persistence.Repositories.Write;
 
 public class MongoEventStore : IEventStore
 {

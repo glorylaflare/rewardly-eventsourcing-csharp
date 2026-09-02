@@ -2,7 +2,7 @@
 using MongoDB.Driver;
 using Rewardly.Domain.Aggregates;
 using Rewardly.Domain.Interfaces.v1;
-using Rewardly.Infra.Persistence.Repositories;
+using Rewardly.Infra.Persistence.Repositories.Write;
 
 namespace Rewardly.Infra.IoC;
 
