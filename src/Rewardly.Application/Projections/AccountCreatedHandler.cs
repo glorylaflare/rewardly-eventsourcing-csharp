@@ -15,7 +15,7 @@ public class AccountCreatedHandler : IProjectionHandler<AccountCreated>
 
     public async Task HandlerAsync(AccountCreated @event, CancellationToken cancellationToken)
     {
-        RewardAccount? account = new RewardAccount(@event.AggregateId, @event.UserId, INITIAL_BALANCE, AccountStatus.Active);
+        RewardAccount? account = new RewardAccount(@event.AggregateId, @event.UserId, INITIAL_BALANCE, AccountStatus.Active, @event.OccurredAt);
 
         await _repository.AddAsync(account, cancellationToken);
     }

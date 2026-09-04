@@ -1,22 +1,59 @@
-﻿using Rewardly.Application.Interfaces.Repositories.Read;
+﻿using Dapper;
+using Rewardly.Application.Interfaces.Repositories.Read;
 using Rewardly.Application.ReadModels;
+using Rewardly.Infra.Persistence.Connection;
 
 namespace Rewardly.Infra.Persistence.Repositories.Read;
 
 public class RewardAccountRepository : IRewardAccountRepository
 {
-    public Task AddAsync(RewardAccount account, CancellationToken cancellationToken)
+    private readonly IDbConnectionFactory _connectionFactory;
+
+    public RewardAccountRepository(IDbConnectionFactory connectionFactory)
     {
-        throw new NotImplementedException();
+        _connectionFactory = connectionFactory;
     }
 
-    public Task FindAsync(Guid id, CancellationToken cancellationToken)
+    public async Task AddAsync(RewardAccount account, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        const string sql = """
+            INSERT INTO RewardAccounts (Id, UserId, Balance, Status, CreatedAt, UpdatedAt)
+            VALUES (@Id, @UserId, @Balance, @Status, @CreatedAt, @UpdatedAt);
+            """;
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var command = new CommandDefinition(sql, account, cancellationToken: cancellationToken);
+
+        await connection.ExecuteAsync(command);
     }
 
-    public Task UpdateAsync(RewardAccount account, CancellationToken cancellationToken)
+    public async Task<RewardAccount?> FindAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        const string sql = """
+            SELECT * FROM RewardAccounts
+            WHERE Id = @Id;
+            """;
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var command = new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken);
+
+        return await connection.QuerySingleOrDefaultAsync<RewardAccount>(command);
+    }
+
+    public async Task UpdateAsync(RewardAccount account, CancellationToken cancellationToken)
+    {
+        const string sql = """
+            UPDATE RewardAccounts
+            SET Balance = @Balance, Stataus = @Status, UpdatedAt = @UpdatedAt;
+            WHERE Id = @Id;
+            """;
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var command = new CommandDefinition(sql, account, cancellationToken: cancellationToken);
+
+        await connection.ExecuteAsync(command);
     }
 }

@@ -18,7 +18,7 @@ public class PointsExpiredHandler : IProjectionHandler<PointsExpired>
         if (account is null)
             return;
 
-        account.UpdateBalance(@event.Points);
+        account.UpdateBalance(@event.Points, @event.OccurredAt);
 
         RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Expiration, @event.Points, @event.OccurredAt);
 

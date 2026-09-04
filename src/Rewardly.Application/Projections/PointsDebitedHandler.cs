@@ -18,7 +18,7 @@ public class PointsDebitedHandler : IProjectionHandler<PointsDebited>
         if (account is null)
             return;
 
-        account.UpdateBalance(@event.Points);
+        account.UpdateBalance(@event.Points, @event.OccurredAt);
 
         RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Debit, @event.Points, @event.OccurredAt);
 

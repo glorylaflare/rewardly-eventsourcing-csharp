@@ -11,31 +11,41 @@ public sealed class RewardAccount
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
 
-    public RewardAccount(Guid id, Guid userId, int balance, AccountStatus status)
+    public RewardAccount(Guid id, Guid userId, int balance, AccountStatus status, DateTime occurredAt)
     {
         Id = id;
         UserId = userId;
         Balance = balance;
         Status = status;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
+        CreatedAt = occurredAt;
+        UpdatedAt = occurredAt;
     }
 
-    public void UpdateBalance(int points)
+    public RewardAccount(Guid id, Guid userId, int balance, AccountStatus status, DateTime createdAt, DateTime updatedAt)
+    {
+        Id = id;
+        UserId = userId;
+        Balance = balance;
+        Status = status;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+    }
+
+    public void UpdateBalance(int points, DateTime occurredAt)
     {
         Balance += points;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = occurredAt;
     }
 
-    public void SetBlockedAccount()
+    public void SetBlockedAccount(DateTime occurredAt)
     {
         Status = AccountStatus.Blocked;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = occurredAt;
     }
 
-    public void SetCancelledAccount()
+    public void SetCancelledAccount(DateTime occurredAt)
     {
         Status = AccountStatus.Cancelled;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = occurredAt;
     }
 }

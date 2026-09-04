@@ -2,6 +2,7 @@
 
 public sealed class MongoDbettings
 {
-    public string? DatabaseName { get; set; }
-    public string? ConnectionString { get; set; }
+    public string? DatabaseName { get; init; }
+    public string? CollectionName { get; init; }
+    public string? ConnectionString { get; init; }
 }

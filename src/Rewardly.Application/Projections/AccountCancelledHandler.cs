@@ -16,6 +16,6 @@ public class AccountCancelledHandler : IProjectionHandler<AccountCancelled>
         if (account is null)
             return;
 
-        account.SetCancelledAccount();
+        account.SetCancelledAccount(@event.OccurredAt);
     }
 }

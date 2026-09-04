@@ -16,6 +16,6 @@ public class AccountBlockedHandler : IProjectionHandler<AccountBlocked>
         if (account is null)
             return;
 
-        account.SetBlockedAccount();
+        account.SetBlockedAccount(@event.OccurredAt);
     }
 }

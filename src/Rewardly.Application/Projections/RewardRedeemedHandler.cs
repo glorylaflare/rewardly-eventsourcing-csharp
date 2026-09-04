@@ -18,7 +18,7 @@ public class RewardRedeemedHandler : IProjectionHandler<RewardRedeemed>
         if (account is null)
             return;
 
-        account.UpdateBalance(@event.Points);
+        account.UpdateBalance(@event.Points, @event.OccurredAt);
 
         RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Redemption, @event.Points, @event.OccurredAt);
 
