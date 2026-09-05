@@ -22,6 +22,8 @@ public class PointsCreditedHandler : IProjectionHandler<PointsCredited>
 
         RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Credit, @event.Points, @event.OccurredAt);
 
+        await _accountRepository.UpdateAsync(account, cancellationToken);
+
         await _transactionRepository.AddAsync(transaction, cancellationToken);
     }
 }

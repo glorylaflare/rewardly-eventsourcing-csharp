@@ -17,5 +17,7 @@ public class AccountBlockedHandler : IProjectionHandler<AccountBlocked>
             return;
 
         account.SetBlockedAccount(@event.OccurredAt);
+
+        await _repository.UpdateAsync(account, cancellationToken);
     }
 }

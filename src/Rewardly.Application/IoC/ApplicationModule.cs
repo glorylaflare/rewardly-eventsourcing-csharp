@@ -1,4 +1,5 @@
 ﻿using Rewardly.Application.Interfaces.Bus.Command;
+using Rewardly.Application.Interfaces.Bus.Query;
 using Rewardly.Application.Projections.Dispatcher;
 using Rewardly.Application.Projections.Handlers;
 
@@ -10,11 +11,13 @@ public static class ApplicationModule
     {
         services.AddScoped<INotification, NotificationContext>();
         services.AddScoped<ICommandBus, CommandBus>();
+        services.AddScoped<IQueryBus, QueryBus>();
+        services.AddScoped<IRequestInvokerFactory, RequestInvokerFactory>();
+
         services.AddPipelineBehavior();
         services.AddProjections();
         services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
         services.AddScoped<IPipelineExecutor, PipelineExecutor>();
-        services.AddScoped<IRequestInvokerFactory, RequestInvokerFactory>();
         services.AddScoped<IPipelineBehaviorFactory, PipelineBehaviorFactory>();
 
         

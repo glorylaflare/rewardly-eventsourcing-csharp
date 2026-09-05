@@ -17,5 +17,7 @@ public class AccountCancelledHandler : IProjectionHandler<AccountCancelled>
             return;
 
         account.SetCancelledAccount(@event.OccurredAt);
+
+        await _repository.UpdateAsync(account, cancellationToken);
     }
 }
