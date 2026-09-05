@@ -11,7 +11,8 @@ public static class DependencyInjection
         services.AddInfrastructure(configuration);
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
-        services.AddScoped<IExceptionMapper, ExceptionMapper>();
+        services.AddProblemDetails();
+        services.AddSingleton<IExceptionMapper, ExceptionMapper>();
 
         return services;
     }

@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Projections;
+﻿namespace Rewardly.Application.Projections.Handlers;
 
 public class PointsCreditedHandler : IProjectionHandler<PointsCredited>
 {
@@ -11,7 +11,7 @@ public class PointsCreditedHandler : IProjectionHandler<PointsCredited>
         _transactionRepository = transactionRepository;
     }
 
-    public async Task HandlerAsync(PointsCredited @event, CancellationToken cancellationToken)
+    public async Task HandleAsync(PointsCredited @event, CancellationToken cancellationToken)
     {
         RewardAccount? account = await _accountRepository.FindAsync(@event.AggregateId, cancellationToken);
 

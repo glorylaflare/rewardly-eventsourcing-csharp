@@ -1,6 +1,6 @@
 ﻿using Rewardly.Domain.Enums;
 
-namespace Rewardly.Application.Projections;
+namespace Rewardly.Application.Projections.Handlers;
 
 public class AccountCreatedHandler : IProjectionHandler<AccountCreated>
 {
@@ -13,7 +13,7 @@ public class AccountCreatedHandler : IProjectionHandler<AccountCreated>
 
     private const int INITIAL_BALANCE = 0;
 
-    public async Task HandlerAsync(AccountCreated @event, CancellationToken cancellationToken)
+    public async Task HandleAsync(AccountCreated @event, CancellationToken cancellationToken)
     {
         RewardAccount? account = new RewardAccount(@event.AggregateId, @event.UserId, INITIAL_BALANCE, AccountStatus.Active, @event.OccurredAt);
 

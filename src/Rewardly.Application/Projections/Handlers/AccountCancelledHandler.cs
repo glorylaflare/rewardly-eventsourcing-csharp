@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Projections;
+﻿namespace Rewardly.Application.Projections.Handlers;
 
 public class AccountCancelledHandler : IProjectionHandler<AccountCancelled>
 {
@@ -9,7 +9,7 @@ public class AccountCancelledHandler : IProjectionHandler<AccountCancelled>
         _repository = repository;
     }
 
-    public async Task HandlerAsync(AccountCancelled @event, CancellationToken cancellationToken)
+    public async Task HandleAsync(AccountCancelled @event, CancellationToken cancellationToken)
     {
         RewardAccount? account = await _repository.FindAsync(@event.AggregateId, cancellationToken);
 

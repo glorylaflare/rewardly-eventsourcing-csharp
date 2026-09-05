@@ -7,14 +7,17 @@ namespace Rewardly.Application.Services.v1;
 public class RewardlyAccountService : IRewardlyAccountService
 {
     private readonly IRepository<RewardlyAccount> _repository;
+    private readonly IProjectionDispatcher _dispatcher;
     private readonly ILogger<RewardlyAccountService> _logger;
 
     public RewardlyAccountService(
-        IRepository<RewardlyAccount> repository, 
-        ILogger<RewardlyAccountService> logger)
+        IRepository<RewardlyAccount> repository,
+        ILogger<RewardlyAccountService> logger,
+        IProjectionDispatcher dispatcher)
     {
         _repository = repository;
         _logger = logger;
+        _dispatcher = dispatcher;
     }
 
     public async Task BlockAsync(BlockAccountRequest request, CancellationToken cancellationToken)
@@ -41,7 +44,7 @@ public class RewardlyAccountService : IRewardlyAccountService
 
         RewardlyAccount? aggregate = RewardlyAccount.Create(Guid.NewGuid(), request.UserId);
 
-        await _repository.SaveAsync(aggregate, cancellationToken);
+        await SaveAndProjectAsync(aggregate, cancellationToken);
 
         _logger.LogInformation("Processo de criação de conta foi concluído com sucesso. AggregateId: {AggregateId}", aggregate.Id);
     }
@@ -82,6 +85,17 @@ public class RewardlyAccountService : IRewardlyAccountService
 
         aggregateAction(aggregate);
 
+        await SaveAndProjectAsync(aggregate, cancellationToken);
+    }
+
+    private async Task SaveAndProjectAsync(RewardlyAccount aggregate, CancellationToken cancellationToken)
+    {
+        IReadOnlyCollection<IEvent> events = aggregate.GetUncommittedEvents()
+            .ToList()
+            .AsReadOnly();
+
         await _repository.SaveAsync(aggregate, cancellationToken);
+
+        await _dispatcher.DispatchAsync(events, cancellationToken);
     }
 }

@@ -13,11 +13,7 @@ public interface IEventStore
     /// <param name="uncommittedEvents">Eventos pendentes de persistência.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Tarefa assíncrona que representa a conclusão da persistência.</returns>
-    Task SaveAsync(
-        Guid aggregateId,
-        int expectedVersion,
-        IEnumerable<IEvent> uncommittedEvents,
-        CancellationToken cancellationToken);
+    Task SaveAsync(Guid aggregateId, int expectedVersion, IEnumerable<IEvent> uncommittedEvents, CancellationToken cancellationToken);
     
     /// <summary>
     /// Recupera o histórico completo de eventos associado a um agregado.
@@ -25,7 +21,5 @@ public interface IEventStore
     /// <param name="aggregateId">Identificador do agregado a ser reconstituído.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Coleção somente leitura com os eventos do agregado, em ordem de persistência.</returns>
-    Task<IReadOnlyCollection<IEvent>> LoadAsync(
-        Guid aggregateId, 
-        CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<IEvent>> LoadAsync(Guid aggregateId, CancellationToken cancellationToken);
 }

@@ -1,5 +1,6 @@
 ﻿using Rewardly.Application.Interfaces.Bus.Command;
-using Rewardly.Application.Projections;
+using Rewardly.Application.Projections.Dispatcher;
+using Rewardly.Application.Projections.Handlers;
 
 namespace Rewardly.Application.IoC;
 
@@ -9,7 +10,7 @@ public static class ApplicationModule
     {
         services.AddScoped<INotification, NotificationContext>();
         services.AddScoped<ICommandBus, CommandBus>();
-        services.AddPipeline();
+        services.AddPipelineBehavior();
         services.AddProjections();
         services.AddScoped<IRewardlyAccountService, RewardlyAccountService>();
         services.AddScoped<IPipelineExecutor, PipelineExecutor>();
@@ -22,7 +23,7 @@ public static class ApplicationModule
         return services;
     }
 
-    public static IServiceCollection AddPipeline(this IServiceCollection services)
+    private static IServiceCollection AddPipelineBehavior(this IServiceCollection services)
     {
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
@@ -31,8 +32,13 @@ public static class ApplicationModule
         return services;
     }
 
-    public static IServiceCollection AddProjections(this IServiceCollection services)
+    private static IServiceCollection AddProjections(this IServiceCollection services)
     {
+        services.AddScoped<IProjectionDispatcher, ProjectionDispatcher>();
+        services.AddScoped<IProjectionInvokerFactory, ProjectionInvokerFactory>();
+
+        services.AddScoped(typeof(ProjectionInvoker<>));
+
         services.AddScoped<IProjectionHandler<AccountCreated>, AccountCreatedHandler>();
         services.AddScoped<IProjectionHandler<AccountBlocked>, AccountBlockedHandler>();
         services.AddScoped<IProjectionHandler<AccountCancelled>, AccountCancelledHandler>();

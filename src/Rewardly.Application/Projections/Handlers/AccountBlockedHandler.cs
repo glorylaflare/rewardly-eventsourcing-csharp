@@ -1,4 +1,4 @@
-﻿namespace Rewardly.Application.Projections;
+﻿namespace Rewardly.Application.Projections.Handlers;
 
 public class AccountBlockedHandler : IProjectionHandler<AccountBlocked>
 {
@@ -9,7 +9,7 @@ public class AccountBlockedHandler : IProjectionHandler<AccountBlocked>
         _repository = repository;
     }
 
-    public async Task HandlerAsync(AccountBlocked @event, CancellationToken cancellationToken)
+    public async Task HandleAsync(AccountBlocked @event, CancellationToken cancellationToken)
     {
         RewardAccount? account = await _repository.FindAsync(@event.AggregateId, cancellationToken);
 
