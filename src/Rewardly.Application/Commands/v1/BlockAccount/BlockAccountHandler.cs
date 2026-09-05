@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Commands.v1.BlockAccount;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.BlockAccount;
 
 public class BlockAccountHandler : ICommandHandler<BlockAccountCommand, bool>
 {

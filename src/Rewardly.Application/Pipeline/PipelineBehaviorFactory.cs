@@ -10,13 +10,13 @@ public class PipelineBehaviorFactory : IPipelineBehaviorFactory
         _serviceProvider = serviceProvider;
     }
 
-    public IReadOnlyCollection<object> Create(ICommandBase command)
+    public IReadOnlyCollection<object> Create(IRequest request)
     {
-        Type behaviorType = _cache.GetOrAdd(command.GetType(), static commandType =>
+        Type behaviorType = _cache.GetOrAdd(request.GetType(), static requestType =>
         {
-            Type? responseType = commandType.GetInterfaces().Single(_ => _.IsGenericType && _.GetGenericTypeDefinition() == typeof(ICommand<>)).GetGenericArguments()[0];
+            Type? responseType = requestType.GetInterfaces().Single(_ => _.IsGenericType && _.GetGenericTypeDefinition() == typeof(IRequest<>)).GetGenericArguments()[0];
 
-            return typeof(IPipelineBehavior<,>).MakeGenericType(commandType, responseType);
+            return typeof(IPipelineBehavior<,>).MakeGenericType(requestType, responseType);
         });
 
         return _serviceProvider.GetServices(behaviorType)

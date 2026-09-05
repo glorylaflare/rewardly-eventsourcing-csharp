@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Bus;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Bus;
 
 public sealed class CommandBus : ICommandBus
 {

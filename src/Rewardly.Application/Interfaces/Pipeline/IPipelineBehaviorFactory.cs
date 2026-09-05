@@ -1,14 +1,14 @@
 ﻿namespace Rewardly.Application.Interfaces.Pipeline;
 
 /// <summary>
-/// Define a fábrica responsável por resolver os comportamentos de pipeline aplicáveis a um comando.
+/// Define a fábrica responsável por resolver os comportamentos de pipeline aplicáveis a uma requisição.
 /// </summary>
 public interface IPipelineBehaviorFactory
 {
     /// <summary>
-    /// Cria a coleção de comportamentos de pipeline registrados para o tipo do comando informado.
+    /// Resolve os comportamentos registrados para o tipo concreto da requisição informada.
     /// </summary>
-    /// <param name="command">Comando utilizado como referência para descoberta dos comportamentos do pipeline.</param>
-    /// <returns>Coleção somente leitura com os comportamentos que serão executados na cadeia do pipeline.</returns>
-    IReadOnlyCollection<object> Create(ICommandBase command);
+    /// <param name="request">Requisição para a qual os comportamentos devem ser obtidos.</param>
+    /// <returns>Coleção de comportamentos de pipeline aplicáveis à requisição.</returns>
+    IReadOnlyCollection<object> Create(IRequest request);
 }

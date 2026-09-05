@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Commands.v1.CancelAccount;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.CancelAccount;
 
 public class CancelAccountHandler : ICommandHandler<CancelAccountCommand, bool>
 {

@@ -1,7 +1,7 @@
 ﻿using Rewardly.Domain.Aggregates;
 using Rewardly.Domain.Interfaces.v1;
 
-namespace Rewardly.Infra.Persistence.Repositories;
+namespace Rewardly.Infra.Persistence.Repositories.Write;
 
 public sealed class RewardlyAccountRepository : IRepository<RewardlyAccount>
 {

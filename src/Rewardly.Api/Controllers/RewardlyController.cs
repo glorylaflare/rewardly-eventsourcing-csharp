@@ -3,7 +3,7 @@ using Rewardly.Application.Commands.v1.CancelAccount;
 using Rewardly.Application.Commands.v1.CreditPoints;
 using Rewardly.Application.Commands.v1.DebitPoints;
 using Rewardly.Application.Commands.v1.RedeemReward;
-using Rewardly.Application.Interfaces.Bus;
+using Rewardly.Application.Interfaces.Bus.Command;
 using Rewardly.Domain.Interfaces.v1;
 using System.Net;
 

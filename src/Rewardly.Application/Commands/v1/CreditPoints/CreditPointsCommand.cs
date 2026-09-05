@@ -1,3 +1,5 @@
-﻿namespace Rewardly.Application.Commands.v1.CreditPoints;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.CreditPoints;
 
 public sealed record CreditPointsCommand(Guid AggregateId, int Points, string Reason) : ICommand<bool>;

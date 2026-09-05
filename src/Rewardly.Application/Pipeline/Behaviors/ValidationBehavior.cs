@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Rewardly.Application.Interfaces.Bus.Command;
 
 namespace Rewardly.Application.Pipeline.Behaviors;
 

@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Commands.v1.CreditPoints;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.CreditPoints;
 
 public class CreditPointsHandler : ICommandHandler<CreditPointsCommand, bool>
 {

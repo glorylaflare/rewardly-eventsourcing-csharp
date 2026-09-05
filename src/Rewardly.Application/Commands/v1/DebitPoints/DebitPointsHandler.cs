@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Commands.v1.DebitPoints;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.DebitPoints;
 
 public class DebitPointsHandler : ICommandHandler<DebitPointsCommand, bool>
 {

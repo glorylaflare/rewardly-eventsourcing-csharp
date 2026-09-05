@@ -1,4 +1,6 @@
-﻿namespace Rewardly.Application.Commands.v1.CreateAccount;
+﻿using Rewardly.Application.Interfaces.Bus.Command;
+
+namespace Rewardly.Application.Commands.v1.CreateAccount;
 
 public class CreateAccountHandler : ICommandHandler<CreateAccountCommand, bool>
 {

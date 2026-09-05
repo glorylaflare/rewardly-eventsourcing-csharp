@@ -11,3 +11,7 @@ global using Rewardly.Application.Pipeline.Behaviors;
 global using Rewardly.Application.Services.v1;
 global using Rewardly.Domain.Interfaces.v1;
 global using Rewardly.Domain.Notifications.v1;
+global using Rewardly.Application.ReadModels;
+global using Rewardly.Application.Interfaces.Projections;
+global using Rewardly.Application.Interfaces.Repositories.Read;
+global using Rewardly.Domain.DomainEvents.v1;
