@@ -46,7 +46,7 @@ public class RewardAccountRepository : IRewardAccountRepository
     {
         const string sql = """
             UPDATE RewardAccounts
-            SET Balance = @Balance, Status = @Status, UpdatedAt = @UpdatedAt;
+            SET Balance = @Balance, Status = @Status, UpdatedAt = @UpdatedAt
             WHERE Id = @Id;
             """;
 
