@@ -56,17 +56,17 @@ public class RewardlyController : ApiControllerBase
     public Task<IActionResult> PostRedeemReward([FromBody] RedeemRewardCommand command, CancellationToken cancellationToken)
         => ExecuteAsync(() =>_commandBus.SendAsync(command, cancellationToken), HttpStatusCode.Created);
 
-    [HttpGet("account/{userid:guid}")]
+    [HttpGet("account/{userId:guid}")]
     [ProducesResponseType(typeof(GetAccountResponse), StatusCodes.Status200OK)]
     public Task<IActionResult> GetAccount(Guid userId, CancellationToken cancellationToken)
         => ExecuteAsync(() => _queryBus.SendAsync(new GetAccountQuery(userId), cancellationToken), HttpStatusCode.OK);
 
-    [HttpGet("account/{userid:guid}/balance")]
+    [HttpGet("account/{userId:guid}/balance")]
     [ProducesResponseType(typeof(GetBalanceResponse), StatusCodes.Status200OK)]
     public Task<IActionResult> GetBalance(Guid userId, CancellationToken cancellationToken)
         => ExecuteAsync(() => _queryBus.SendAsync(new GetBalanceQuery(userId), cancellationToken), HttpStatusCode.OK);
 
-    [HttpGet("account/{userid:guid}/transactions")]
+    [HttpGet("account/{userId:guid}/transactions")]
     [ProducesResponseType(typeof(GetTransactionsResponse), StatusCodes.Status200OK)]
     public Task<IActionResult> GetTransactions(Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
         => ExecuteAsync(() => _queryBus.SendAsync(new GetTransactionsQuery(userId, page, pageSize), cancellationToken), HttpStatusCode.OK);

@@ -1,4 +1,5 @@
-﻿using Rewardly.Application.Commands.v1.BlockAccount;
+﻿using FluentValidation;
+using Rewardly.Application.Commands.v1.BlockAccount;
 using Rewardly.Application.Commands.v1.CancelAccount;
 using Rewardly.Application.Commands.v1.CreateAccount;
 using Rewardly.Application.Commands.v1.CreditPoints;
@@ -8,6 +9,9 @@ using Rewardly.Application.Interfaces.Bus.Command;
 using Rewardly.Application.Interfaces.Bus.Query;
 using Rewardly.Application.Projections.Dispatcher;
 using Rewardly.Application.Projections.Handlers;
+using Rewardly.Application.Queries.v1.GetAccount;
+using Rewardly.Application.Queries.v1.GetBalance;
+using Rewardly.Application.Queries.v1.GetTransactions;
 
 namespace Rewardly.Application.IoC;
 
@@ -47,6 +51,10 @@ public static class DependencyInjection
         services.AddScoped<IRequestHandler<CreditPointsCommand, bool>, CreditPointsCommandHandler>();
         services.AddScoped<IRequestHandler<DebitPointsCommand, bool>, DebitPointsCommandHandler>();
         services.AddScoped<IRequestHandler<RedeemRewardCommand, bool>, RedeemRewardCommandHandler>();
+
+        services.AddScoped<IRequestHandler<GetAccountQuery, GetAccountResponse>, GetAccountQueryHandler>();
+        services.AddScoped<IRequestHandler<GetBalanceQuery, GetBalanceResponse>, GetBalanceQueryHandler>();
+        services.AddScoped<IRequestHandler<GetTransactionsQuery, GetTransactionsResponse>, GetTransactionsQueryHandler>();
     }
 
     private static void AddPipelineBehavior(IServiceCollection services)
@@ -57,6 +65,8 @@ public static class DependencyInjection
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        services.AddScoped(typeof(IValidator<>), typeof(GetTransactionsQueryValidator));
     }
 
     private static void AddProjections(IServiceCollection services)
