@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Commands.v1.BlockAccount;
 
-public class BlockAccountHandler : ICommandHandler<BlockAccountCommand, bool>
+public class BlockAccountCommandHandler : ICommandHandler<BlockAccountCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public BlockAccountHandler(IRewardlyAccountService service)
+    public BlockAccountCommandHandler(IRewardlyAccountService service)
     {
         _service = service;
     }

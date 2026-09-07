@@ -13,26 +13,30 @@ using Rewardly.Infra.Persistence.Repositories.Write;
 
 namespace Rewardly.Infra.IoC;
 
-public static class InfrastructureModule
+public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IEventStore, MongoEventStore>();
-        services.AddScoped<IRepository<RewardlyAccount>, RewardlyAccountRepository>();
-
-        services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
-        
-        services.AddScoped<IRewardAccountRepository, RewardAccountRepository>();
-        services.AddScoped<IRewardTransactionRepository, RewardTransactionRepository>();
-
-        services.Configure<MongoDbSettings>(configuration.GetSection(MongoDbSettings.SectionName));
-        AddMongoDriver(services);
+        AddRepositories(services);
+        AddMongoDriver(services, configuration);
 
         return services;
     }
 
-    private static void AddMongoDriver(IServiceCollection services)
+    private static void AddRepositories(IServiceCollection services)
     {
+        services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
+
+        services.AddScoped<IEventStore, MongoEventStore>();
+        services.AddScoped<IRepository<RewardlyAccount>, RewardlyAccountRepository>();
+        services.AddScoped<IRewardAccountRepository, RewardAccountRepository>();
+        services.AddScoped<IRewardTransactionRepository, RewardTransactionRepository>();
+    }
+
+    private static void AddMongoDriver(IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MongoDbSettings>(configuration.GetSection(MongoDbSettings.SectionName));
+
         services.AddSingleton<IMongoClient>(serviceProvider =>
         {
             MongoDbSettings settings = serviceProvider

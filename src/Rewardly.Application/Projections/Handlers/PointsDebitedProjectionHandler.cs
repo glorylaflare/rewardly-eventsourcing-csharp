@@ -1,17 +1,17 @@
 ﻿namespace Rewardly.Application.Projections.Handlers;
 
-public class RewardRedeemedHandler : IProjectionHandler<RewardRedeemed>
+public class PointsDebitedProjectionHandler : IProjectionHandler<PointsDebited>
 {
     private readonly IRewardAccountRepository _accountRepository;
     private readonly IRewardTransactionRepository _transactionRepository;
 
-    public RewardRedeemedHandler(IRewardTransactionRepository transactionRepository, IRewardAccountRepository accountRepository)
+    public PointsDebitedProjectionHandler(IRewardTransactionRepository transactionRepository, IRewardAccountRepository accountRepository)
     {
         _transactionRepository = transactionRepository;
         _accountRepository = accountRepository;
     }
 
-    public async Task HandleAsync(RewardRedeemed @event, CancellationToken cancellationToken)
+    public async Task HandleAsync(PointsDebited @event, CancellationToken cancellationToken)
     {
         RewardAccount? account = await _accountRepository.FindAsync(@event.AggregateId, cancellationToken);
 
@@ -20,7 +20,7 @@ public class RewardRedeemedHandler : IProjectionHandler<RewardRedeemed>
 
         account.UpdateBalance(-@event.Points, @event.OccurredAt);
 
-        RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Redemption, @event.Points, @event.OccurredAt);
+        RewardTransaction transaction = new RewardTransaction(@event.EventId, @event.AggregateId, TransactionType.Debit, @event.Points, @event.OccurredAt);
 
         await _accountRepository.UpdateAsync(account, cancellationToken);
 

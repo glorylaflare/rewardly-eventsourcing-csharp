@@ -10,10 +10,16 @@ public static class DependencyInjection
         services.AddApplication();
         services.AddInfrastructure(configuration);
 
+        AddExceptionHandler(services);
+
+
+        return services;
+    }
+
+    private static void AddExceptionHandler(IServiceCollection services)
+    {
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddSingleton<IExceptionMapper, ExceptionMapper>();
-
-        return services;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Rewardly.Application.Commands.v1.RedeemReward;
-using Rewardly.Application.Requests;
 
 namespace Rewardly.Application.Mappers;
 

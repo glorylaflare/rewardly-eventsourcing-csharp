@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Commands.v1.CancelAccount;
 
-public class CancelAccountHandler : ICommandHandler<CancelAccountCommand, bool>
+public class CancelAccountCommandHandler : ICommandHandler<CancelAccountCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public CancelAccountHandler(IRewardlyAccountService service)
+    public CancelAccountCommandHandler(IRewardlyAccountService service)
     {
         _service = service;
     }

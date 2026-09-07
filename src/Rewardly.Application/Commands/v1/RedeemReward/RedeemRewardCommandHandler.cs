@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Commands.v1.RedeemReward;
 
-public class RedeemRewardHandler : ICommandHandler<RedeemRewardCommand, bool>
+public class RedeemRewardCommandHandler : ICommandHandler<RedeemRewardCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public RedeemRewardHandler(IRewardlyAccountService service)
+    public RedeemRewardCommandHandler(IRewardlyAccountService service)
     {
         _service = service;
     }

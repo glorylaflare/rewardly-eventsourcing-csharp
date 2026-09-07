@@ -1,10 +1,10 @@
 ﻿namespace Rewardly.Application.Projections.Handlers;
 
-public class AccountBlockedHandler : IProjectionHandler<AccountBlocked>
+public class AccountBlockedProjectionHandler : IProjectionHandler<AccountBlocked>
 {
     private readonly IRewardAccountRepository _repository;
 
-    public AccountBlockedHandler(IRewardAccountRepository repository)
+    public AccountBlockedProjectionHandler(IRewardAccountRepository repository)
     {
         _repository = repository;
     }

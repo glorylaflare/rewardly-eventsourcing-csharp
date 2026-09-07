@@ -1,10 +1,10 @@
 ﻿namespace Rewardly.Application.Projections.Handlers;
 
-public class AccountCancelledHandler : IProjectionHandler<AccountCancelled>
+public class AccountCancelledProjectionHandler : IProjectionHandler<AccountCancelled>
 {
     private readonly IRewardAccountRepository _repository;
 
-    public AccountCancelledHandler(IRewardAccountRepository repository)
+    public AccountCancelledProjectionHandler(IRewardAccountRepository repository)
     {
         _repository = repository;
     }

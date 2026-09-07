@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Commands.v1.CreateAccount;
 
-public class CreateAccountHandler : ICommandHandler<CreateAccountCommand, bool>
+public class CreateAccountCommandHandler : ICommandHandler<CreateAccountCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public CreateAccountHandler(IRewardlyAccountService service)
+    public CreateAccountCommandHandler(IRewardlyAccountService service)
     {
         _service = service;
     }
