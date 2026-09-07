@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Projections.Handlers;
 
-public class AccountCreatedHandler : IProjectionHandler<AccountCreated>
+public class AccountCreatedProjectionHandler : IProjectionHandler<AccountCreated>
 {
     private readonly IRewardAccountRepository _repository;
 
-    public AccountCreatedHandler(IRewardAccountRepository repository)
+    public AccountCreatedProjectionHandler(IRewardAccountRepository repository)
     {
         _repository = repository;
     }

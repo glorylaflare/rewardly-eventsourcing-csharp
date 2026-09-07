@@ -1,11 +1,11 @@
 ﻿namespace Rewardly.Application.Projections.Handlers;
 
-public class PointsCreditedHandler : IProjectionHandler<PointsCredited>
+public class PointsCreditedProjectionHandler : IProjectionHandler<PointsCredited>
 {
     private readonly IRewardAccountRepository _accountRepository;
     private readonly IRewardTransactionRepository _transactionRepository;
 
-    public PointsCreditedHandler(IRewardAccountRepository accountRepository, IRewardTransactionRepository transactionRepository)
+    public PointsCreditedProjectionHandler(IRewardAccountRepository accountRepository, IRewardTransactionRepository transactionRepository)
     {
         _accountRepository = accountRepository;
         _transactionRepository = transactionRepository;

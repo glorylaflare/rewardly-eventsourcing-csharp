@@ -2,11 +2,11 @@
 
 namespace Rewardly.Application.Commands.v1.DebitPoints;
 
-public class DebitPointsHandler : ICommandHandler<DebitPointsCommand, bool>
+public class DebitPointsCommandHandler : ICommandHandler<DebitPointsCommand, bool>
 {
     private readonly IRewardlyAccountService _service;
 
-    public DebitPointsHandler(IRewardlyAccountService service)
+    public DebitPointsCommandHandler(IRewardlyAccountService service)
     {
         _service = service;
     }
