@@ -28,16 +28,16 @@ public class RewardAccountRepository : IRewardAccountRepository
         await connection.ExecuteAsync(command);
     }
 
-    public async Task<RewardAccount?> FindAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<RewardAccount?> FindAsync(Guid userId, CancellationToken cancellationToken)
     {
         const string sql = """
             SELECT * FROM RewardAccounts
-            WHERE Id = @Id;
+            WHERE UserId = @UserId;
             """;
 
         using var connection = _connectionFactory.CreateConnection();
 
-        var command = new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken);
+        var command = new CommandDefinition(sql, new { UserId = userId }, cancellationToken: cancellationToken);
 
         return await connection.QuerySingleOrDefaultAsync<RewardAccount>(command);
     }
@@ -47,7 +47,7 @@ public class RewardAccountRepository : IRewardAccountRepository
         const string sql = """
             UPDATE RewardAccounts
             SET Balance = @Balance, Status = @Status, UpdatedAt = @UpdatedAt
-            WHERE Id = @Id;
+            WHERE UserId = @UserId;
             """;
 
         using var connection = _connectionFactory.CreateConnection();
