@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="Dispatchers\**" />
-    <Compile Remove="Queries\**" />
     <EmbeddedResource Remove="Dispatchers\**" />
-    <EmbeddedResource Remove="Queries\**" />
     <None Remove="Dispatchers\**" />
-    <None Remove="Queries\**" />
   </ItemGroup>
 
   <ItemGroup>

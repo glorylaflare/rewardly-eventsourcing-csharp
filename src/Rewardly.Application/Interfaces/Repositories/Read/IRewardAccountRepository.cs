@@ -16,10 +16,10 @@ public interface IRewardAccountRepository
     /// <summary>
     /// Recupera uma conta projetada pelo seu identificador.
     /// </summary>
-    /// <param name="id">Identificador da conta a ser localizada.</param>
+    /// <param name="userId">Identificador da conta a ser localizada.</param>
     /// <param name="cancellationToken">Token para cancelamento cooperativo da operação assíncrona.</param>
     /// <returns>Conta projetada encontrada ou nulo quando inexistente.</returns>
-    Task<RewardAccount?> FindAsync(Guid id, CancellationToken cancellationToken);
+    Task<RewardAccount?> FindAsync(Guid userId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Atualiza os dados de uma conta já existente no modelo de leitura.

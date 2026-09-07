@@ -41,12 +41,12 @@ public static class DependencyInjection
 
     private static void AddRequestHandlers(IServiceCollection services)
     {
-        services.AddScoped<IRequestHandler<BlockAccountCommand, bool>, BlockAccountHandler>();
-        services.AddScoped<IRequestHandler<CancelAccountCommand, bool>, CancelAccountHandler>();
-        services.AddScoped<IRequestHandler<CreateAccountCommand, bool>, CreateAccountHandler>();
-        services.AddScoped<IRequestHandler<CreditPointsCommand, bool>, CreditPointsHandler>();
-        services.AddScoped<IRequestHandler<DebitPointsCommand, bool>, DebitPointsHandler>();
-        services.AddScoped<IRequestHandler<RedeemRewardCommand, bool>, RedeemRewardHandler>();
+        services.AddScoped<IRequestHandler<BlockAccountCommand, bool>, BlockAccountCommandHandler>();
+        services.AddScoped<IRequestHandler<CancelAccountCommand, bool>, CancelAccountCommandHandler>();
+        services.AddScoped<IRequestHandler<CreateAccountCommand, bool>, CreateAccountCommandHandler>();
+        services.AddScoped<IRequestHandler<CreditPointsCommand, bool>, CreditPointsCommandHandler>();
+        services.AddScoped<IRequestHandler<DebitPointsCommand, bool>, DebitPointsCommandHandler>();
+        services.AddScoped<IRequestHandler<RedeemRewardCommand, bool>, RedeemRewardCommandHandler>();
     }
 
     private static void AddPipelineBehavior(IServiceCollection services)
@@ -65,12 +65,12 @@ public static class DependencyInjection
         services.AddScoped<IProjectionInvokerFactory, ProjectionInvokerFactory>();
         services.AddScoped(typeof(ProjectionInvoker<>));
 
-        services.AddScoped<IProjectionHandler<AccountCreated>, AccountCreatedHandler>();
-        services.AddScoped<IProjectionHandler<AccountBlocked>, AccountBlockedHandler>();
-        services.AddScoped<IProjectionHandler<AccountCancelled>, AccountCancelledHandler>();
-        services.AddScoped<IProjectionHandler<PointsCredited>, PointsCreditedHandler>();
-        services.AddScoped<IProjectionHandler<PointsDebited>, PointsDebitedHandler>();
-        services.AddScoped<IProjectionHandler<PointsExpired>, PointsExpiredHandler>();
-        services.AddScoped<IProjectionHandler<RewardRedeemed>, RewardRedeemedHandler>();
+        services.AddScoped<IProjectionHandler<AccountCreated>, AccountCreatedProjectionHandler>();
+        services.AddScoped<IProjectionHandler<AccountBlocked>, AccountBlockedProjectionHandler>();
+        services.AddScoped<IProjectionHandler<AccountCancelled>, AccountCancelledProjectionHandler>();
+        services.AddScoped<IProjectionHandler<PointsCredited>, PointsCreditedProjectionHandler>();
+        services.AddScoped<IProjectionHandler<PointsDebited>, PointsDebitedProjectionHandler>();
+        services.AddScoped<IProjectionHandler<PointsExpired>, PointsExpiredProjectionHandler>();
+        services.AddScoped<IProjectionHandler<RewardRedeemed>, RewardRedeemedProjectionHandler>();
     }
 }
